@@ -9,12 +9,9 @@ const menuItems = [
   { name: 'Help', icon: require('../../assets/images/home.png') },
 ];
 
-const App = () => {
+const index = () => {
   return (
     <View style={styles.container}>
-      <View style={styles.header}>
-        <Image source={require('../../assets/images/logo.png')} style={styles.logo} />
-      </View>
       <ScrollView horizontal={true} style={styles.menuContainer} showsHorizontalScrollIndicator={false}>
         {menuItems.map((item, index) => (
           <TouchableOpacity key={index} style={styles.menuItem}>
@@ -35,18 +32,8 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#f5f5f5',
   },
-  header: {
-    width: '100%',
-    height: '15%',   
-    backgroundColor: '#f5f5f5',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  logo: {
-    width: '90%',
-    height: '70%',
-  },
-  menuContainer: { 
+  menuContainer: {
+    paddingVertical: 10,
     backgroundColor: '#fff',
     borderBottomWidth: 1,
     borderBottomColor: '#ddd',
@@ -57,12 +44,12 @@ const styles = StyleSheet.create({
     marginHorizontal: 15,
   },
   menuIcon: {
-    width: 30,
-    height: 30,  // Reduced size for the icons
+    width: 40,
+    height: 40,
   },
   menuText: {
-    marginTop: 2,
-    fontSize: 12,  // Reduced font size
+    marginTop: 5,
+    fontSize: 14,
     color: '#333',
   },
   content: {
@@ -77,4 +64,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default App;
+export default index;
