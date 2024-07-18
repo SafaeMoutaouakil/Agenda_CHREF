@@ -1,28 +1,28 @@
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import HomeScreen from './HomeScreen';
+import Home from './Home';
 import AgendaScreen from './AgendaScreen';
 import MeetingScreen from './MeetingScreen';
 import MemberScreen from './MemberScreen';
 
 const Stack = createStackNavigator();
 
-function Index() {
+function Navigation() {
   return (
     <NavigationContainer>
       <Stack.Navigator initialRouteName="Home">
         <Stack.Screen 
           name="Home" 
-          component={HomeScreen} 
+          component={Home} 
           options={{ headerShown: false }} 
         />
-        <Stack.Screen name="Agenda" component={AgendaScreen} />
-        <Stack.Screen name="Meeting" component={MeetingScreen} />
-        <Stack.Screen name="Member" component={MemberScreen} />
+        <Stack.Screen name="AgendaScreen" component={AgendaScreen} />
+        <Stack.Screen name="MeetingScreen" component={MeetingScreen} />
+        <Stack.Screen name="MemberScreen" component={MemberScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );
 }
 
-export default Index;
+export default Navigation;

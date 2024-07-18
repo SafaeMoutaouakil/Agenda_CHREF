@@ -1,4 +1,4 @@
-import React from 'react';
+/*import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 
 const MemberScreen = () => {
@@ -22,4 +22,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default MemberScreen;
+export default MemberScreen;*/

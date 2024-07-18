@@ -2,7 +2,7 @@
 import { View, Text, TouchableOpacity, StyleSheet, Image } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
-function HomeScreen({ navigation }) {
+function Home({ navigation }) {
   const [activePage, setActivePage] = useState('Home');
 
   return (
@@ -114,14 +114,16 @@ const styles = StyleSheet.create({
   },
 });
 
-export default HomeScreen;
+export default Home;
 */
 
 import * as React from "react";
-import { StyleSheet, View, Image, Text, ImageBackground } from "react-native";
+import { StyleSheet, View, Image, Text, ImageBackground,TouchableOpacity } from "react-native";
 import { Color, FontFamily, FontSize } from "../../GlobalStyles";
+import { useNavigation } from '@react-navigation/native';
 
-const HomeScreen = () => {
+const Home = () => {
+  const navigation = useNavigation();
   return (
     <ImageBackground
       style={styles.homeIcon}
@@ -152,24 +154,32 @@ const HomeScreen = () => {
         resizeMode="cover"
         source={require("../../assets/line-4.png")}
       />
-      <Text style={[styles.text2, styles.textTypo]}>الاجتماعات المبرمجة</Text>
-      <Image
-        style={[styles.alignJustifyIcon, styles.iconLayout]}
-        resizeMode="cover"
-        source={require("../../assets/align-justify.png")}
-      />
-      <Text style={[styles.text3, styles.textTypo]}>اجندة المجلس</Text>
-      <Image
-        style={[styles.calendarIcon, styles.iconLayout]}
-        resizeMode="cover"
-        source={require("../../assets/calendar.png")}
-      />
-      <Text style={[styles.text4, styles.text4Position]}>اعضاء المجلس</Text>
-      <Image
-        style={[styles.usersIcon, styles.text4Position]}
-        resizeMode="cover"
-        source={require("../../assets/users.png")}
-      />
+      <TouchableOpacity onPress={() => navigation.navigate('MeetingScreen')}>
+        <Text style={[styles.text2, styles.textTypo]}>الاجتماعات المبرمجة</Text>
+        <Image
+          style={[styles.alignJustifyIcon, styles.iconLayout]}
+          resizeMode="cover"
+          source={require("../../assets/align-justify.png")}
+        />
+      </TouchableOpacity>
+
+      <TouchableOpacity onPress={() => navigation.navigate('AgendaScreen')}>
+        <Text style={[styles.text3, styles.textTypo]}>اجندة المجلس</Text>
+        <Image
+          style={[styles.calendarIcon, styles.iconLayout]}
+          resizeMode="cover"
+          source={require("../../assets/calendar.png")}
+        />
+      </TouchableOpacity>
+
+      <TouchableOpacity onPress={() => navigation.navigate('MemberScreen')}>
+        <Text style={[styles.text4, styles.text4Position]}>اعضاء المجلس</Text>
+        <Image
+          style={[styles.usersIcon, styles.text4Position]}
+          resizeMode="cover"
+          source={require("../../assets/users.png")}
+        />
+      </TouchableOpacity>
     </ImageBackground>
   );
 };
@@ -318,5 +328,5 @@ const styles = StyleSheet.create({
   },
 });
 
-export default HomeScreen;
+export default Home;
 
