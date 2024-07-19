@@ -1,16 +1,14 @@
 import React from 'react';
-import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import Home from './Home';
-import AgendaScreen from './AgendaScreen';
-import MeetingScreen from './MeetingScreen';
-import MemberScreen from './MemberScreen';
+import Home from '../src/screens/Home';
+import AgendaScreen from '../src/screens/AgendaScreen';
+import MeetingScreen from '../src/screens/MeetingScreen';
+import MemberScreen from '../src/screens/MemberScreen';
 
 const Stack = createStackNavigator();
 
 function Navigation() {
   return (
-    <NavigationContainer>
       <Stack.Navigator initialRouteName="Home">
         <Stack.Screen 
           name="Home" 
@@ -21,7 +19,6 @@ function Navigation() {
         <Stack.Screen name="MeetingScreen" component={MeetingScreen} />
         <Stack.Screen name="MemberScreen" component={MemberScreen} />
       </Stack.Navigator>
-    </NavigationContainer>
   );
 }
 

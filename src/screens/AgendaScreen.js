@@ -25,9 +25,9 @@ const styles = StyleSheet.create({
 export default AgendaScreen;*/
 import React, { useState } from 'react';
 import { View, Text, Button, StyleSheet } from 'react-native';
-import { Picker } from '@react-native-picker/picker';
-import DateTimePicker from 'react-native-modal-datetime-picker';
+import DateTimePicker from '@react-native-community/datetimepicker';
 import moment from 'moment';
+import { Picker } from '@react-native-picker/picker';
 
 const AgendaScreen = () => {
   const [selectedEntity, setSelectedEntity] = useState('');
@@ -45,8 +45,9 @@ const AgendaScreen = () => {
     setStartDatePickerVisibility(false);
   };
 
-  const handleStartDateConfirm = (date) => {
-    setStartDate(date);
+  const handleStartDateConfirm = (event, selectedDate) => {
+    const currentDate = selectedDate || startDate;
+    setStartDate(currentDate);
     hideStartDatePicker();
   };
 
@@ -58,8 +59,9 @@ const AgendaScreen = () => {
     setEndDatePickerVisibility(false);
   };
 
-  const handleEndDateConfirm = (date) => {
-    setEndDate(date);
+  const handleEndDateConfirm = (event, selectedDate) => {
+    const currentDate = selectedDate || endDate;
+    setEndDate(currentDate);
     hideEndDatePicker();
   };
 
@@ -92,19 +94,25 @@ const AgendaScreen = () => {
         <Button title={`إلى: ${moment(endDate).format('DD/MM/YYYY')}`} onPress={showEndDatePicker} />
       </View>
 
-      <DateTimePicker
-        isVisible={isStartDatePickerVisible}
-        mode="date"
-        onConfirm={handleStartDateConfirm}
-        onCancel={hideStartDatePicker}
-      />
+      {isStartDatePickerVisible && (
+        <DateTimePicker
+          testID="startDateTimePicker"
+          value={startDate}
+          mode="date"
+          display="default"
+          onChange={handleStartDateConfirm}
+        />
+      )}
 
-      <DateTimePicker
-        isVisible={isEndDatePickerVisible}
-        mode="date"
-        onConfirm={handleEndDateConfirm}
-        onCancel={hideEndDatePicker}
-      />
+      {isEndDatePickerVisible && (
+        <DateTimePicker
+          testID="endDateTimePicker"
+          value={endDate}
+          mode="date"
+          display="default"
+          onChange={handleEndDateConfirm}
+        />
+      )}
 
       <View style={styles.agenda}>
         <Text style={styles.agendaText}>التاريخ: 2021-10-11</Text>
@@ -153,4 +161,3 @@ const styles = StyleSheet.create({
 });
 
 export default AgendaScreen;
-
