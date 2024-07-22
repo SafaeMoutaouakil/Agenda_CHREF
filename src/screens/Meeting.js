@@ -1,10 +1,10 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 
-const MemberScreen = () => {
+const Meeting = () => {
   return (
     <View style={styles.container}>
-      <Text style={styles.text}>Members Screen</Text>
+      <Text style={styles.text}>Meetings Screen</Text>
     </View>
   );
 };
@@ -22,4 +22,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default MemberScreen;
+export default Meeting;

@@ -154,7 +154,7 @@ const Home = () => {
         resizeMode="cover"
         source={require("../../assets/line-4.png")}
       />
-      <TouchableOpacity onPress={() => navigation.navigate('MeetingScreen')}>
+      <TouchableOpacity onPress={() => navigation.navigate('Meeting')}>
         <Text style={[styles.text2, styles.textTypo]}>الاجتماعات المبرمجة</Text>
         <Image
           style={[styles.alignJustifyIcon, styles.iconLayout]}
@@ -163,7 +163,7 @@ const Home = () => {
         />
       </TouchableOpacity>
 
-      <TouchableOpacity onPress={() => navigation.navigate('AgendaScreen')}>
+      <TouchableOpacity onPress={() => navigation.navigate('Agenda')}>
         <Text style={[styles.text3, styles.textTypo]}>اجندة المجلس</Text>
         <Image
           style={[styles.calendarIcon, styles.iconLayout]}
@@ -172,7 +172,7 @@ const Home = () => {
         />
       </TouchableOpacity>
 
-      <TouchableOpacity onPress={() => navigation.navigate('MemberScreen')}>
+      <TouchableOpacity onPress={() => navigation.navigate('Member')}>
         <Text style={[styles.text4, styles.text4Position]}>اعضاء المجلس</Text>
         <Image
           style={[styles.usersIcon, styles.text4Position]}
@@ -329,4 +329,3 @@ const styles = StyleSheet.create({
 });
 
 export default Home;
-
