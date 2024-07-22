@@ -18,8 +18,8 @@ function Navigation() {
           options={{ headerShown: false }} 
         />
         <Stack.Screen name="Agenda" component={Agenda} options={{ headerShown: false }}  />
-        <Stack.Screen name="Meeting" component={Meeting} />
-        <Stack.Screen name="Member" component={Member} />
+        <Stack.Screen name="Meeting" component={Meeting} options={{ headerShown: false }}/>
+        <Stack.Screen name="Member" component={Member} options={{ headerShown: false }} />
         <Stack.Screen name="SearchResults" component={SearchResults} />
       </Stack.Navigator>
   );

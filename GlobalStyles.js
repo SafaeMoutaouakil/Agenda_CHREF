@@ -7,6 +7,7 @@ export const Color = {
   colorFirebrick: "#bf0f0f",
   colorWhite: "#fff",
   schemesOnSurface: "#1d1b20",
+  colorDarkslategray: "#49454f",
 };
 /* fonts */
 export const FontFamily = {
@@ -20,7 +21,9 @@ export const FontSize = {
   m3DisplaySmall_size: 36,
   m3HeadlineSmall_size: 24,
 };
+
 /* border radiuses */
 export const Border = {
+  br_xl: 20,
   br_xs: 12,
 };
