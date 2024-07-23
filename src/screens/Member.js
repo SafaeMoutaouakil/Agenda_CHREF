@@ -35,23 +35,7 @@ const Member = () => {
   return (
     <ImageBackground source={require('../../assets/home.png')} style={styles.homeIcon}>
       <ScrollView contentContainerStyle={styles.container}>
-        <Image
-          style={styles.image101Icon}
-          resizeMode="cover"
-          source={require("../../assets/image-101.png")}
-        />
-        <TouchableOpacity onPress={() => navigation.navigate('Home')}>
-          <Image
-            style={styles.image26Icon}
-            resizeMode="cover"
-            source={require("../../assets/image-26.png")}
-          />
-        </TouchableOpacity>
-        <Image
-          style={styles.memItem}
-          resizeMode="cover"
-          source={require("../../assets/line-2.png")}
-        />
+      
         <Text style={styles.header}> اعضاء مكتب مجلس النواب</Text>
         <View style={styles.gestureBar}>
           <View style={styles.handle} />
