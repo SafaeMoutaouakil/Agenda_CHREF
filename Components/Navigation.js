@@ -11,15 +11,15 @@ const Stack = createStackNavigator();
 
 function Navigation() {
   return (
-      <Stack.Navigator initialRouteName="Home">
+      <Stack.Navigator initialRouteName="اجندة">
         <Stack.Screen 
-          name="Home" 
+          name="اجندة" 
           component={Home} 
-          options={{ headerShown: false }} 
+          
         />
         <Stack.Screen name="Agenda" component={Agenda} options={{ headerShown: false }}  />
         <Stack.Screen name="Meeting" component={Meeting} options={{ headerShown: false }}/>
-        <Stack.Screen name="Member" component={Member} options={{ headerShown: false }} />
+        <Stack.Screen name="Member" component={Member}  />
         <Stack.Screen name="SearchResults" component={SearchResults} />
       </Stack.Navigator>
   );

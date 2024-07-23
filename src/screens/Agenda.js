@@ -352,10 +352,36 @@ const Agenda = () => {
   const navigation = useNavigation();
   const [selectedAuthority, setSelectedAuthority] = useState('');
   const [location, setLocation] = useState('');
-  const [showStartPicker, setShowStartPicker] = useState(false);
-  const [showEndPicker, setShowEndPicker] = useState(false);
+  const [showStartDatePicker, setShowStartPicker] = useState(false);
+  const [showEndDatePicker, setShowEndPicker] = useState(false);
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
+
+  const [meetings, setMeetings] = useState([
+    {
+      date: '2021-10-11',
+      time: '17:00:00',
+      topic: 'جلسة رقم 4',
+      details: 'جلسة مشتركة لمجلس البرلمان',
+      authority: 'جلسة مشتركة',
+      status: 'تم البرمجة',
+      location: 'القاعة المغربية',
+      type: 'حضوري',
+      notes: 'الاجتماع برئاسة النائب السيد محمد شوكي رئيس اللجنة المدة الزمنية',
+    },
+    {
+      date: '2021-10-11',
+      time: '17:00:00',
+      topic: 'جلسة رقم 4',
+      details: 'جلسة مشتركة لمجلس البرلمان',
+      authority: 'جلسة مشتركة',
+      status: 'تم البرمجة',
+      location: 'القاعة المغربية',
+      type: 'حضوري',
+      notes: 'الاجتماع برئاسة النائب السيد محمد شوكي رئيس اللجنة المدة الزمنية',
+    },
+    // Ajoutez plus de réunions ici
+  ]);
 
   
 
@@ -411,63 +437,61 @@ const Agenda = () => {
         <View style={styles.handle} />
       </View>
       <ScrollView style={styles.scrollView}>
-      <Text style={styles.label}>الهيئة:</Text>
-        <View style={styles.pickerContainer}>
-          <Picker
-            selectedValue={selectedAuthority}
-            style={styles.picker}
-            onValueChange={(itemValue) => setSelectedAuthority(itemValue)}
-          >
-            <Picker.Item label="" value="" />
-            {authorities.map((authority, index) => (
-              <Picker.Item key={index} label={authority} value={authority} />
-            ))}
-          </Picker>
-        </View>
+      
+      <View style={styles.container}>
+      <TextInput
+        style={styles.input}
+        placeholder="أدخل المكان"
+        value={location}
+        onChangeText={setLocation}
+      />
+      
+      <View style={styles.pickerContainer}>
+        <Picker
+          selectedValue={selectedAuthority}
+          style={styles.picker}
+          onValueChange={(itemValue) => setSelectedAuthority(itemValue)}
+        >
+          <Picker.Item label="اختر الهيئة" value={null} enabled={false} />
+          {authorities.map((authority, index) => (
+            <Picker.Item key={index} label={authority} value={authority} />
+          ))}
+        </Picker>
+      </View>
+    </View>
 
-        <Text style={styles.label}>المكان:</Text>
-        <TextInput
-          style={styles.input}
-          placeholder="أدخل المكان"
-          value={location}
-          onChangeText={setLocation}
-        />
+<View style={styles.dateContainer}>
+      <Button
+        title={`من: ${moment(startDate).format('DD/MM/YYYY')}`}
+        onPress={showStartDatePicker}
+      />
+      
+      <Button
+        title={`إلى: ${moment(endDate).format('DD/MM/YYYY')}`}
+        onPress={showEndDatePicker}
+      />
+    </View>
 
-        <Text style={styles.label}>من:</Text>
-        <TouchableOpacity onPress={() => setShowStartPicker(true)} style={styles.dateButton}>
-          <Text>{moment(startDate).format('YYYY-MM-DD')}</Text>
-        </TouchableOpacity>
-        {showStartPicker && (
-          <DateTimePicker
-            testID="startDateTimePicker"
-            value={startDate}
-            mode="date"
-            display="default"
-            onChange={handleStartDateConfirm}
-          />
-        )}
-
-        <Text style={styles.label}>إلى:</Text>
-        <TouchableOpacity onPress={() => setShowEndPicker(true)} style={styles.dateButton}>
-          <Text>{moment(endDate).format('YYYY-MM-DD')}</Text>
-        </TouchableOpacity>
-        {showEndPicker && (
-          <DateTimePicker
-            testID="endDateTimePicker"
-            value={endDate}
-            mode="date"
-            display="default"
-            onChange={handleEndDateConfirm}
-          />
-        )}
+       
 
 <TouchableOpacity style={styles.searchButton} onPress={handleSearch}>
-          <Image
-            style={styles.searchIcon}
-            source={require("../../assets/search.png")}
-          />
-          <Text style={styles.searchText}>ابحث</Text>
+          
+          <Text style={styles.searchText}>بحث</Text>
         </TouchableOpacity>
+
+        {meetings.map((meeting, index) => (
+          <View key={index} style={styles.agenda}>
+            <Text style={styles.agendaText}>التاريخ: {meeting.date}</Text>
+            <Text style={styles.agendaText}>الساعة: {meeting.time}</Text>
+            <Text style={styles.agendaText}>الموضوع: {meeting.topic}</Text>
+            <Text style={styles.agendaText}>التفاصيل: {meeting.details}</Text>
+            <Text style={styles.agendaText}>الهيئة: {meeting.authority}</Text>
+            <Text style={styles.agendaText}>الوضعية: {meeting.status}</Text>
+            <Text style={styles.agendaText}>المكان: {meeting.location}</Text>
+            <Text style={styles.agendaText}>الطبيعة: {meeting.type}</Text>
+            <Text style={styles.agendaText}>ملاحظات: {meeting.notes}</Text>
+          </View>
+        ))}
 
         
       </ScrollView>
@@ -476,6 +500,7 @@ const Agenda = () => {
 };
 
 const styles = StyleSheet.create({
+  
   agendascreenInner: {
     top: 1663,
     width: 731,
@@ -493,11 +518,7 @@ const styles = StyleSheet.create({
     width: 108,
     position: "absolute",
   },
-  searchText: {
-    marginLeft: 10,
-    fontSize: 18,
-    color: '#000',
-  },
+  
   rectangleViewBg: {
     backgroundColor: Color.colorWhite,
     position: "absolute",
@@ -553,31 +574,25 @@ const styles = StyleSheet.create({
     fontSize: 24,
     textAlign: 'center',
     marginVertical: 20,
+    fontWeight: 'bold', // Gras
+
   },
-  picker: {
-    top: 1,
-    height: 50,
-    marginVertical: 10,
-    
-  },
+  
   dateContainer: {
+    top:-40,
+    left:60,
     flexDirection: 'row-reverse',
     justifyContent: 'space-between',
     marginVertical: 20,
-    paddingHorizontal: 20,
+    paddingHorizontal: 60,
     marginTop: 70,
+    borderRadius: 5, // Bords arrondis
+    
+
+    
   },
-  pickerContainer: {
-    top: 30,
-    width: 350,
-    height: 50,
-    left: 7,
-    marginVertical: 10,
-    borderColor: '#ccc',
-    borderWidth: 1,
-    justifyContent: 'center',
-    backgroundColor: '#fff',
-  },
+  
+  
   agenda: {
     top: 80,
     padding: 20,
@@ -595,30 +610,64 @@ const styles = StyleSheet.create({
     fontSize: 18,
     marginBottom: 10,
   },
+  container: {
+    flexDirection: 'row', // Pour placer les éléments côte à côte
+    justifyContent: 'space-between',
+    alignItems: 'center', // Pour aligner les éléments verticalement
+    marginVertical: 20,
+    paddingHorizontal: 20,
+  },
+  pickerContainer: {
+    left:30,
+    marginRight: 10, // Espace entre le Picker et le TextInput
+    height: 50, // Hauteur du Picker pour correspondre à celle du TextInput
+    backgroundColor: 'white', // Couleur de fond du TextInput
+    borderRadius: 5, // Pour arrondir les bords du TextInput
+    borderColor: 'gray', // Couleur de la bordure
+    borderWidth: 1, // Épaisseur de la bordure
+    width:150,
+  
+  },
+  picker: {
+    height: '100%', // Prendre toute la hauteur du conteneur
+    color: 'gray', // Couleur du texte
+    top:-3,
+    textAlign:'center',
+    
+  },
   input: {
-    top: 30,
-    width: 350,
+    width:150,
+    left:-20,
     height: 50,
-    left: 7,
-    borderColor: '#ccc',
-    borderWidth: 1,
-    marginBottom: 20,
-    paddingHorizontal: 10,
-    textAlign: 'right', // Align text to the right for Arabic input
-    backgroundColor: '#fff',
+    backgroundColor: 'white', // Couleur de fond du TextInput
+    borderRadius: 5, // Pour arrondir les bords du TextInput
+    borderColor: 'gray', // Couleur de la bordure
+    borderWidth: 1, // Épaisseur de la bordure
+    paddingHorizontal: 10, // Espacement intérieur
+    textAlign: 'center',
+    
+    
   },
   scrollView: {
     marginHorizontal: 20,
   },
   searchButton: {
-    alignSelf: 'center',
-    marginVertical: 20,
+    top:-95,
+    backgroundColor: '#B22222', // Couleur Firebrick
+    paddingVertical: 10, // Espacement vertical pour le bouton
+    paddingHorizontal: 20, // Espacement horizontal pour le bouton
+    borderRadius: 5, // Bords arrondis
+    alignItems: 'center', // Centre le texte horizontalement
+    justifyContent: 'center', // Centre le texte verticalement
+    width:80,
+    height:40,
   },
-  searchIcon: {
-    top:20,
-    width: 30,
-    height: 30,
-    left :-20,
+  searchText: {
+    color: 'black', // Couleur du texte noire
+    fontSize: 18, // Taille de la police
+    fontWeight: 'bold', // Gras
+    textAlign:'center',
+    top:-3,
   },
   dateButton: {
     top:30,

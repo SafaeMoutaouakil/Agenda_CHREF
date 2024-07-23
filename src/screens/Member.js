@@ -4,6 +4,7 @@ import { View, Text, Image, ScrollView, StyleSheet, ImageBackground, TouchableOp
 import { Color, FontFamily, FontSize } from "../../GlobalStyles";
 
 const members = [
+  { name: 'راشيد الطالبي العلمي', group: 'فريق حزب التجمع الوطني للأحرار', title: 'رئيس مجلس النواب', image: require('../../assets/image-1.png') },
   { name: 'محمد صباري', group: 'فريق الأصالة والمعاصرة', title: 'النائب الأول للرئيس', image: require('../../assets/image-111.png') },
   { name: 'عبد الصمد قيوح', group: 'الفريق الاستقلالي للوحدة والتعادلية', title: 'النائب الثاني للرئيس', image: require('../../assets/image-111.png') },
   { name: 'ادريس اشطيبي', group: 'الفريق الاشتراكي - المعارضة الاتحادية', title: 'النائب الثالث للرئيس', image: require('../../assets/image-111.png') },
@@ -79,6 +80,10 @@ const styles = StyleSheet.create({
     fontSize: 24,
     textAlign: 'center',
     marginVertical: 20,
+    fontWeight: 'bold', // Gras
+    color: 'black', // Couleur du texte noire
+
+
   },
   image101Icon: {
     width: 165,
@@ -141,27 +146,39 @@ const styles = StyleSheet.create({
     shadowRadius: 5,
     elevation: 3,
     width: '90%',
+    height:110,
   },
   image: {
     width: 70,
     height: 70,
     marginBottom: 10,
     borderRadius: 35,
+    left:130,
   },
   name: {
-    fontSize: 20,
+    fontSize: 22,
     fontWeight: 'bold',
-    textAlign: 'center',
+    color: 'black', // Couleur du texte noire
+    left:10,
+    top:-80,
+
+
   },
   group: {
-    fontSize: 16,
+    fontSize: 18,
     color: '#555',
-    textAlign: 'center',
+    color: 'black', // Couleur du texte noire
+    left:-20,
+    top:-70,
+
   },
   title: {
-    fontSize: 14,
+    fontSize: 16,
     color: '#999',
-    textAlign: 'center',
+    color: 'black', // Couleur du texte noire
+    left:1,
+    top:-60,
+
   },
   textTypo2: {
     textAlign: "right",
