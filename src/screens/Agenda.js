@@ -416,82 +416,95 @@ const Agenda = () => {
       resizeMode="cover"
       source={require("../../assets/home.png")}
     >
-      <Text style={styles.header}>اجندة المجلس</Text>
-
-      <TouchableOpacity onPress={() => navigation.navigate('Home')}>
-        <Image
-          style={styles.image26Icon}
-          resizeMode="cover"
-          source={require("../../assets/image-26.png")}
-        />
-      </TouchableOpacity>
-      <Image
-        style={styles.todayIcon}
-        resizeMode="cover"
-        source={require("../../assets/today.png")}
-      />
-      <View style={styles.agendascreenChild} />
-      <View style={[styles.agendascreenItem, styles.rectangleViewBg]} />
-      <View style={[styles.agendascreenInner, styles.lineViewBorder]} />
-      <View style={styles.gestureBar}>
-        <View style={styles.handle} />
-      </View>
+     
       <ScrollView style={styles.scrollView}>
       
+      <View style={styles.main}>
       <View style={styles.container}>
-      <TextInput
-        style={styles.input}
-        placeholder="أدخل المكان"
-        value={location}
-        onChangeText={setLocation}
-      />
-      
-      <View style={styles.pickerContainer}>
-        <Picker
-          selectedValue={selectedAuthority}
-          style={styles.picker}
-          onValueChange={(itemValue) => setSelectedAuthority(itemValue)}
-        >
-          <Picker.Item label="اختر الهيئة" value={null} enabled={false} />
-          {authorities.map((authority, index) => (
-            <Picker.Item key={index} label={authority} value={authority} />
-          ))}
-        </Picker>
+        <TextInput
+          style={styles.input}
+          placeholder="أدخل المكان"
+          value={location}
+          onChangeText={setLocation}
+        />
+        
+        <View style={styles.pickerContainer}>
+          <Picker
+            selectedValue={selectedAuthority}
+            style={styles.picker}
+            onValueChange={(itemValue) => setSelectedAuthority(itemValue)}
+          >
+            <Picker.Item label="اختر الهيئة" value={null} enabled={false} />
+            {authorities.map((authority, index) => (
+              <Picker.Item key={index} label={authority} value={authority} />
+            ))}
+          </Picker>
+        </View>
       </View>
-    </View>
 
-<View style={styles.dateContainer}>
-      <Button
-        title={`من: ${moment(startDate).format('DD/MM/YYYY')}`}
-        onPress={showStartDatePicker}
-      />
-      
-      <Button
-        title={`إلى: ${moment(endDate).format('DD/MM/YYYY')}`}
-        onPress={showEndDatePicker}
-      />
-    </View>
+      <View style={styles.dateContainer}>
+        <Button
+          title={`من: ${moment(startDate).format('DD/MM/YYYY')}`}
+          onPress={showStartDatePicker}
+        />
+        
+        <Button
+          title={`إلى: ${moment(endDate).format('DD/MM/YYYY')}`}
+          onPress={showEndDatePicker}
+        />
+      </View>
 
-       
+      <TouchableOpacity style={styles.searchButton} onPress={handleSearch}>
+        <Text style={styles.searchText}>بحث</Text>
+      </TouchableOpacity>
 
-<TouchableOpacity style={styles.searchButton} onPress={handleSearch}>
-          
-          <Text style={styles.searchText}>بحث</Text>
-        </TouchableOpacity>
+      </View>
+    
 
-        {meetings.map((meeting, index) => (
-          <View key={index} style={styles.agenda}>
-            <Text style={styles.agendaText}>التاريخ: {meeting.date}</Text>
-            <Text style={styles.agendaText}>الساعة: {meeting.time}</Text>
-            <Text style={styles.agendaText}>الموضوع: {meeting.topic}</Text>
-            <Text style={styles.agendaText}>التفاصيل: {meeting.details}</Text>
-            <Text style={styles.agendaText}>الهيئة: {meeting.authority}</Text>
-            <Text style={styles.agendaText}>الوضعية: {meeting.status}</Text>
-            <Text style={styles.agendaText}>المكان: {meeting.location}</Text>
-            <Text style={styles.agendaText}>الطبيعة: {meeting.type}</Text>
-            <Text style={styles.agendaText}>ملاحظات: {meeting.notes}</Text>
+      {meetings.map((meeting, index) => (
+        <View key={index} style={styles.agenda}>
+          <View style={styles.row}>
+            <Text style={styles.boldText}>التاريخ: </Text>
+            <Text style={styles.agendaText}>{meeting.date}</Text>
           </View>
-        ))}
+          <View style={styles.row}>
+            <Text style={styles.boldText}>الساعة: </Text>
+            <Text style={styles.agendaText}>{meeting.time}</Text>
+          </View>
+          <View style={styles.row}>
+            <Text style={styles.boldText}>الموضوع: </Text>
+            <Text style={styles.agendaText}>{meeting.topic}</Text>
+          </View>
+          <View style={styles.row}>
+            <Text style={styles.boldText}>التفاصيل: </Text>
+            <Text style={styles.agendaText}>{meeting.details}</Text>
+          </View>
+          <View style={styles.row}>
+            <Text style={styles.boldText}>الهيئة: </Text>
+            <Text style={styles.agendaText}>{meeting.authority}</Text>
+          </View>
+          <View style={styles.row}>
+            <Text style={styles.boldText}>الوضعية: </Text>
+            <Text style={styles.agendaText}>{meeting.status}</Text>
+          </View>
+          <View style={styles.row}>
+            <Text style={styles.boldText}>المكان: </Text>
+            <Text style={styles.agendaText}>{meeting.location}</Text>
+          </View>
+          <View style={styles.row}>
+            <Text style={styles.boldText}>الطبيعة: </Text>
+            <Text style={styles.agendaText}>{meeting.type}</Text>
+          </View>
+          <View style={styles.row}>
+            <Text style={styles.boldText}>ملاحظات: </Text>
+            <Text style={styles.agendaText}>{meeting.notes}</Text>
+          </View>
+          <View style={styles.lineViewBorder} />
+        </View>
+      ))}
+        
+
+        
 
         
       </ScrollView>
@@ -500,6 +513,21 @@ const Agenda = () => {
 };
 
 const styles = StyleSheet.create({
+  main:{
+    backgroundColor: '#fff',
+    borderRadius: 10,
+    borderColor: 'black',
+    borderWidth: 2,
+    top:15,
+    marginVertical: 10,
+    marginHorizontal:5,
+    left:-5,
+    width: 370,
+    height:210,
+    
+
+  },
+  
   
   agendascreenInner: {
     top: 1663,
@@ -580,7 +608,7 @@ const styles = StyleSheet.create({
   
   dateContainer: {
     top:-40,
-    left:60,
+    left:50,
     flexDirection: 'row-reverse',
     justifyContent: 'space-between',
     marginVertical: 20,
@@ -594,13 +622,25 @@ const styles = StyleSheet.create({
   
   
   agenda: {
-    top: 80,
+    top: -5,
     padding: 20,
     backgroundColor: '#fff',
     borderRadius: 10,
     marginTop: 20,
   },
+  row: {
+    flexDirection: 'row-reverse',
+    alignItems: 'right',
+    marginBottom: 5,
+  },
+  boldText: {
+    fontWeight: 'bold',
+    fontSize: 16,
+    marginRight: 5, // Adds some space between the title and the value
+    color: 'black', // Couleur du texte noire
+      },
   agendaText: {
+    top : -5,
     fontSize: 16,
     marginVertical: 5,
   },
@@ -618,14 +658,14 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
   },
   pickerContainer: {
-    left:30,
+    left:20,
     marginRight: 10, // Espace entre le Picker et le TextInput
     height: 50, // Hauteur du Picker pour correspondre à celle du TextInput
     backgroundColor: 'white', // Couleur de fond du TextInput
     borderRadius: 5, // Pour arrondir les bords du TextInput
-    borderColor: 'gray', // Couleur de la bordure
+    borderColor: 'black', // Couleur de la bordure
     borderWidth: 1, // Épaisseur de la bordure
-    width:150,
+    width:160,
   
   },
   picker: {
@@ -636,12 +676,12 @@ const styles = StyleSheet.create({
     
   },
   input: {
-    width:150,
-    left:-20,
+    width:160,
+    left:-15,
     height: 50,
     backgroundColor: 'white', // Couleur de fond du TextInput
     borderRadius: 5, // Pour arrondir les bords du TextInput
-    borderColor: 'gray', // Couleur de la bordure
+    borderColor: 'black', // Couleur de la bordure
     borderWidth: 1, // Épaisseur de la bordure
     paddingHorizontal: 10, // Espacement intérieur
     textAlign: 'center',
@@ -661,9 +701,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center', // Centre le texte verticalement
     width:80,
     height:40,
+    left:10,
   },
   searchText: {
-    color: 'black', // Couleur du texte noire
+    color: 'white', // Couleur du texte noire
     fontSize: 18, // Taille de la police
     fontWeight: 'bold', // Gras
     textAlign:'center',
@@ -676,6 +717,7 @@ const styles = StyleSheet.create({
     left:7,
     borderColor: '#ccc',
     borderWidth: 1,
+    borderRadius: 5, // Bords arrondis
     marginBottom: 20,
     justifyContent: 'center',
     alignItems: 'center',
@@ -686,6 +728,27 @@ const styles = StyleSheet.create({
     height: 932,
     overflow: "hidden",
     width: "100%",
+  },
+  lineView: {
+    top: 510,
+    left: 1,
+    
+    height: 10,
+    borderStyle: "solid",
+    borderRadius: 5, // Bords arrondis
+
+
+  },
+  lineViewBorder: {
+    width: 372, // S'assure que la ligne s'étend sur toute la largeur du conteneur
+    borderTopWidth: 10,
+    borderColor: 'black', // Change selon la couleur souhaitée
+    height: 10,
+    borderStyle: 'solid',
+    position: 'absolute',
+    bottom: 0, // Positionne la ligne en bas du conteneur
+    left: 0,
+    borderRadius: 15, // Bords arrondis
   },
 });
 

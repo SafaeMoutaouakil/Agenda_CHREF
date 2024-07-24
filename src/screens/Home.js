@@ -130,16 +130,7 @@ const Home = () => {
       resizeMode="cover"
       source={require("../../assets/home.png")}
     >
-      <View style={styles.component2}>
-        <View style={styles.component2Child} />
-        <View style={styles.component2Child} />
-        <View style={styles.component2Child} />
-        <Image
-          style={styles.image101Icon}
-          resizeMode="cover"
-          source={require("../../assets/image-101.png")}
-        />
-      </View>
+      
       <Text style={[styles.text, styles.textTypo1]}>الرئيسية</Text>
       <Text style={[styles.text1, styles.textTypo1]}>الاعضاء</Text>
       <View style={[styles.homeChild, styles.homeLayout]} />
@@ -199,25 +190,26 @@ const styles = StyleSheet.create({
     fontFamily: FontFamily.m3DisplaySmall,
     lineHeight: 32,
     fontSize: FontSize.m3HeadlineSmall_size,
-    top: 165,
+    top: 100,
     position: "absolute",
   },
   homeLayout: {
     height: 2,
-    width: 82,
+    width: 60,
     borderTopWidth: 2,
     borderColor: Color.colorOrangered,
     borderStyle: "solid",
-    top: 208,
+    top: 135,
     position: "absolute",
   },
   lineIconLayout: {
-    height: 90,
-    width: 1,
-    top: 138,
+    height: 50,
+    width: 5,
+    top: 100,
     position: "absolute",
   },
   textTypo: {
+    
     lineHeight: 44,
     fontSize: FontSize.m3DisplaySmall_size,
     textAlign: "right",
@@ -230,7 +222,7 @@ const styles = StyleSheet.create({
     overflow: "hidden",
   },
   text4Position: {
-    top: 349,
+    top: 250,
     position: "absolute",
   },
   component2Child: {
@@ -257,49 +249,51 @@ const styles = StyleSheet.create({
     position: "absolute",
   },
   text: {
+    
     left: 284,
   },
   text1: {
-    left: 108,
+    left: 180,
   },
   homeChild: {
-    left: 308,
+    left: 330,
   },
   homeItem: {
-    left: 132,
+    left: 225,
   },
   homeInner: {
-    left: 260,
+    left: 310,
   },
   lineIcon: {
-    left: 74,
+    left: 210,
   },
   text2: {
-    top: 539,
-    left: -170,
+    top: 450,
+    left: -230,
     width: 492,
     height: 85,
     position: "absolute",
   },
   alignJustifyIcon: {
-    top: 533,
-    left: 348,
+    top: 445,
+    left: 299,
     width: 56,
   },
   text3: {
-    top: 442,
-    left: -90,
+    top: 350,
+    left: -150,
     width: 405,
     height: 84,
     position: "absolute",
   },
   calendarIcon: {
-    top: 432,
-    left: 335,
+    top: 345,
+    left: 290,
     width: 70,
+    
   },
   text4: {
-    left: -107,
+    left: -150,
     width: 406,
     height: 74,
     lineHeight: 44,
@@ -309,7 +303,7 @@ const styles = StyleSheet.create({
     fontFamily: FontFamily.m3DisplaySmall,
   },
   usersIcon: {
-    left: 342,
+    left: 295,
     width: 64,
     height: 45,
     overflow: "hidden",

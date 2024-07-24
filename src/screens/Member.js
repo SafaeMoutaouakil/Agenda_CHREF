@@ -34,12 +34,10 @@ const Member = () => {
 
   return (
     <ImageBackground source={require('../../assets/home.png')} style={styles.homeIcon}>
+        
       <ScrollView contentContainerStyle={styles.container}>
       
-        <Text style={styles.header}> اعضاء مكتب مجلس النواب</Text>
-        <View style={styles.gestureBar}>
-          <View style={styles.handle} />
-        </View>
+        
         {members.map((member, index) => (
           <MemberCard
             key={index}

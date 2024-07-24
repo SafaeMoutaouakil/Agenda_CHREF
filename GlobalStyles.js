@@ -18,8 +18,8 @@ export const FontFamily = {
 export const FontSize = {
   m3LabelSmall_size: 11,
   m3TitleSmall_size: 14,
-  m3DisplaySmall_size: 36,
-  m3HeadlineSmall_size: 24,
+  m3DisplaySmall_size: 26,
+  m3HeadlineSmall_size: 20,
 };
 
 /* border radiuses */
