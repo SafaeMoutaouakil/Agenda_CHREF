@@ -1,53 +1,42 @@
-import React from 'react';
+import React, { useState, useEffect} from 'react';
 import { useNavigation } from '@react-navigation/native';
-import { View, Text, Image, ScrollView, StyleSheet, ImageBackground, TouchableOpacity } from 'react-native';
+import { View, Text, Image, ScrollView, StyleSheet, ImageBackground, TouchableOpacity, FlatList } from 'react-native';
 import { Color, FontFamily, FontSize } from "../../GlobalStyles";
-
-const members = [
-  { name: 'راشيد الطالبي العلمي', group: 'فريق حزب التجمع الوطني للأحرار', title: 'رئيس مجلس النواب', image: require('../../assets/image-1.png') },
-  { name: 'محمد صباري', group: 'فريق الأصالة والمعاصرة', title: 'النائب الأول للرئيس', image: require('../../assets/image-111.png') },
-  { name: 'عبد الصمد قيوح', group: 'الفريق الاستقلالي للوحدة والتعادلية', title: 'النائب الثاني للرئيس', image: require('../../assets/image-111.png') },
-  { name: 'ادريس اشطيبي', group: 'الفريق الاشتراكي - المعارضة الاتحادية', title: 'النائب الثالث للرئيس', image: require('../../assets/image-111.png') },
-  { name: 'محمد والزين', group: 'الفريق الحركي', title: 'النائب الرابع للرئيس', image: require('../../assets/image-111.png') },
-  { name: 'محمد جودار', group: 'الفريق الدستوري الديمقراطي الاجتماعي', title: 'النائب الخامس للرئيس', image: require('../../assets/image-111.png') },
-  { name: 'نادية تهامي', group: 'فريق التقدم والاشتراكية', title: 'النائبة السادسة للرئيس', image: require('../../assets/image-111.png') },
-  { name: 'زينب إدحلي', group: 'فريق التجمع الوطني للأحرار', title: 'النائبة السابعة للرئيس', image: require('../../assets/image-111.png') },
-  { name: 'محمد غيات', group: 'فريق التجمع الوطني للأحرار', title: 'النائب الثامن للرئيس', image: require('../../assets/image-111.png') },
-  { name: 'محمد الحموتي', group: 'فريق الأصالة والمعاصرة', title: 'محاسب المجلس', image: require('../../assets/image-111.png') },
-  { name: 'طارق قديري', group: 'الفريق الاستقلالي للوحدة والتعادلية', title: 'محاسب المجلس', image: require('../../assets/image-111.png') },
-  { name: 'امبارك حمية', group: 'فريق التجمع الوطني للأحرار', title: 'أمين المجلس', image: require('../../assets/image-111.png') },
-  { name: 'نادية بزداف', group: 'فريق الأصالة والمعاصرة', title: 'أمينة المجلس', image: require('../../assets/image-111.png') },
-  { name: 'مروى الأنصاري', group: 'الفريق الاستقلالي للوحدة والتعادلية', title: 'أمينة المجلس', image: require('../../assets/image-111.png') },
-];
-
-const MemberCard = ({ name, group, title, image }) => (
-  <View style={styles.card}>
-    <Image source={image} style={styles.image} />
-    <Text style={styles.name}>{name}</Text>
-    <Text style={styles.group}>{group}</Text>
-    <Text style={styles.title}>{title}</Text>
-  </View>
-);
+import { fetchMembers, getDeputesInfo } from '../../Data/dataSQLite';
 
 const Member = () => {
-  const navigation = useNavigation();
+  const [members, setMembers] = useState([]);
+  const [error, setError] = useState(null);
+  const [deputesInfo, setDeputesInfo] = useState([]);
+
+  useEffect(() => {
+    getDeputesInfo()
+      .then(data => setDeputesInfo(data))
+      .catch(error => {
+        console.error('Error fetching members:', error);
+        setError(error);
+      });
+  }, []);
+
 
   return (
     <ImageBackground source={require('../../assets/home.png')} style={styles.homeIcon}>
-        
-      <ScrollView contentContainerStyle={styles.container}>
-      
-        
-        {members.map((member, index) => (
-          <MemberCard
-            key={index}
-            name={member.name}
-            group={member.group}
-            title={member.title}
-            image={member.image}
-          />
-        ))}
-      </ScrollView>
+       <View> 
+       <FlatList
+          data={deputesInfo}
+          keyExtractor={(item, index) => index.toString()}
+          renderItem={({ item }) => (
+            <View style={styles.card}>
+              <Image source={require('../../assets/image-111.png')} style={styles.image} />
+              <Text style={styles.name}>{item.name}</Text>
+              <Text style={styles.group}>{item.organ_group}</Text>
+              <Text style={styles.title}>{item.title}</Text>
+            </View>
+          )}
+        />
+     </View>
+
+
     </ImageBackground>
   );
 };
@@ -129,6 +118,7 @@ const styles = StyleSheet.create({
     elevation: 3,
     width: '90%',
     height:110,
+    left:20,
   },
   image: {
     width: 70,

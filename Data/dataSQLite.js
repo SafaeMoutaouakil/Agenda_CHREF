@@ -74,9 +74,7 @@ export const createTables = async () => {
         Nom_Ar TEXT,
         Nom_Fr TEXT,
         Presentation_Ar TEXT,
-        Presentation_Fr TEXT,
-        Idcategorieorganes INTEGER,
-        FOREIGN KEY(Idcategorieorganes) REFERENCES categorieorganes(id)
+        Presentation_Fr TEXT
       )`,
       [],
       () => { console.log('Table organes created successfully'); },
@@ -129,8 +127,10 @@ export const createTables = async () => {
         Inactif INTEGER CHECK (Inactif IN (0, 1)),
         Leg20162021 TEXT,
         Leg20212026 TEXT,
+        Idcategorieorganes INTEGER,
         FOREIGN KEY(DeputesId) REFERENCES Deputes(id),
-        FOREIGN KEY(organeID) REFERENCES organes(id)
+        FOREIGN KEY(organeID) REFERENCES organes(id),
+        FOREIGN KEY(Idcategorieorganes) REFERENCES categorieorganes(id)
       )`,
       [],
       () => { console.log('Table Deputes_organes created successfully'); },
@@ -188,12 +188,12 @@ export const insertSallesReunion = (Salle_Ar, Salle_Fr, Order_, Flag) => {
   });
 };
 
-export const insertDeputesOrganes = (DeputesId, organeID, RoleID, Date_Debut, Date_Fin, Inactif, Leg20162021, Leg20212026) => {
+export const insertDeputesOrganes = (DeputesId, organeID, RoleID, Date_Debut, Date_Fin, Inactif, Leg20162021, Leg20212026,  Idcategorieorganes) => {
   return new Promise((resolve, reject) => {
     db.transaction(tx => {
       tx.executeSql(
-        'INSERT INTO Deputes_organes (DeputesId, organeID, RoleID, Date_Debut, Date_Fin, Inactif, Leg20162021, Leg20212026) VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
-        [DeputesId, organeID, RoleID, Date_Debut, Date_Fin, Inactif, Leg20162021, Leg20212026],
+        'INSERT INTO Deputes_organes (DeputesId, organeID, RoleID, Date_Debut, Date_Fin, Inactif, Leg20162021, Leg20212026,  Idcategorieorganes) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)',
+        [DeputesId, organeID, RoleID, Date_Debut, Date_Fin, Inactif, Leg20162021, Leg20212026,  Idcategorieorganes],
         (_, result) => resolve(result),
         (_, error) => {
           console.log('Error inserting into Deputes_organes:', error);
@@ -204,12 +204,12 @@ export const insertDeputesOrganes = (DeputesId, organeID, RoleID, Date_Debut, Da
   });
 };
 
-export const insertOrganes = (Nom_Ar, Nom_Fr, Presentation_Ar, Presentation_Fr, Idcategorieorganes) => {
+export const insertOrganes = (Nom_Ar, Nom_Fr, Presentation_Ar, Presentation_Fr) => {
   return new Promise((resolve, reject) => {
     db.transaction(tx => {
       tx.executeSql(
-        'INSERT INTO organes (Nom_Ar, Nom_Fr, Presentation_Ar, Presentation_Fr, Idcategorieorganes) VALUES (?, ?, ?, ?, ?)',
-        [Nom_Ar, Nom_Fr, Presentation_Ar, Presentation_Fr, Idcategorieorganes],
+        'INSERT INTO organes (Nom_Ar, Nom_Fr, Presentation_Ar, Presentation_Fr) VALUES (?, ?, ?, ?)',
+        [Nom_Ar, Nom_Fr, Presentation_Ar, Presentation_Fr],
         (_, result) => resolve(result),
         (_, error) => {
           console.log('Error inserting into organes:', error);
@@ -244,24 +244,67 @@ export const insertData = async () => {
       await insertSallesReunion('Salle 1 Ar', 'Salle 1 Fr', 1, 0);
       await insertSallesReunion('Salle 2 Ar', 'Salle 2 Fr', 2, 1);
 
-      // Data for categorieorganes
-      await insertCategorieOrganes('Catégorie 1 Ar', 'Catégorie 1 Fr');
-      await insertCategorieOrganes('Catégorie 2 Ar', 'Catégorie 2 Fr');
+       // Insert categories
+       await insertCategorieOrganes('رئيس مجلس النواب', 'President of the Council');
+       await insertCategorieOrganes('النائب الأول للرئيس', 'First Vice President');
+       await insertCategorieOrganes('النائب الثاني للرئيس', 'Second Vice President');
+       await insertCategorieOrganes('النائب الثالث للرئيس', 'Third Vice President');
+       await insertCategorieOrganes('النائب الرابع للرئيس', 'Fourth Vice President');
+       await insertCategorieOrganes('النائب الخامس للرئيس', 'Fifth Vice President');
+       await insertCategorieOrganes('النائبة السادسة للرئيس', 'Sixth Vice President');
+       await insertCategorieOrganes('النائبة السابعة للرئيس', 'Seventh Vice President');
+       await insertCategorieOrganes('النائب الثامن للرئيس', 'Eighth Vice President');
+       await insertCategorieOrganes('محاسب المجلس', 'Council Accountant');
+       await insertCategorieOrganes('أمين المجلس', 'Council Secretary');
+       await insertCategorieOrganes('أمينة المجلس', 'Council Secretary');
+ 
+       // Insert organes
+       await insertOrganes('فريق حزب التجمع الوطني للأحرار', 'RNI Group', 'Présentation en Arabe', 'Presentation in French');
+       await insertOrganes('فريق الأصالة والمعاصرة', 'PAM Group', 'Présentation en Arabe', 'Presentation in French');
+       await insertOrganes('الفريق الاستقلالي للوحدة والتعادلية', 'Istiqlal Group', 'Présentation en Arabe', 'Presentation in French');
+       await insertOrganes('الفريق الاشتراكي - المعارضة الاتحادية', 'Socialist Group', 'Présentation en Arabe', 'Presentation in French');
+       await insertOrganes('الفريق الحركي', 'Movement Group', 'Présentation en Arabe', 'Presentation in French');
+       await insertOrganes('الفريق الدستوري الديمقراطي الاجتماعي', 'Constitutional Group', 'Présentation en Arabe', 'Presentation in French');
+       await insertOrganes('فريق التقدم والاشتراكية', 'Progress and Socialism Group', 'Présentation en Arabe', 'Presentation in French');
+ 
+       // Insert deputies
+       await insertDeputes('Code1', 'الطالبي العلمي', 'Nom Fr 1', 'راشيد', 'Prenom Fr 1', 'M', 1, 'email1@example.com', '123456789');
+       await insertDeputes('Code2', 'صباري', 'Nom Fr 2', 'محمد', 'Prenom Fr 2', 'M', 1, 'email2@example.com', '987654321');
+       await insertDeputes('Code3', 'قيوح', 'Nom Fr 3', 'عبد الصمد', 'Prenom Fr 3', 'M', 1, 'email3@example.com', '123456123');
+       await insertDeputes('Code4', 'اشطيبي', 'Nom Fr 4', 'ادريس', 'Prenom Fr 4', 'M', 1, 'email4@example.com', '321654987');
+       await insertDeputes('Code5', 'والزين', 'Nom Fr 5', 'محمد', 'Prenom Fr 5', 'M', 1, 'email5@example.com', '456789123');
+       await insertDeputes('Code6', 'جودار', 'Nom Fr 6', 'محمد', 'Prenom Fr 6', 'M', 1, 'email6@example.com', '654123789');
+       await insertDeputes('Code7', 'تهامي', 'Nom Fr 7', 'نادية', 'Prenom Fr 7', 'F', 1, 'email7@example.com', '789123456');
+       await insertDeputes('Code8', 'إدحلي', 'Nom Fr 8', 'زينب', 'Prenom Fr 8', 'F', 1, 'email8@example.com', '321987456');
+       await insertDeputes('Code9', 'غيات', 'Nom Fr 9', 'محمد', 'Prenom Fr 9', 'M', 1, 'email9@example.com', '654789321');
+       await insertDeputes('Code10', 'الحموتي', 'Nom Fr 10', 'محمد', 'Prenom Fr 10', 'M', 1, 'email10@example.com', '987321456');
+       await insertDeputes('Code11', 'قديري', 'Nom Fr 11', 'طارق', 'Prenom Fr 11', 'M', 1, 'email11@example.com', '123654789');
+       await insertDeputes('Code12', 'حمية', 'Nom Fr 12', 'امبارك', 'Prenom Fr 12', 'M', 1, 'email12@example.com', '456321987');
+       await insertDeputes('Code13', 'بزداف', 'Nom Fr 13', 'نادية', 'Prenom Fr 13', 'F', 1, 'email13@example.com', '789654123');
+       await insertDeputes('Code14', 'الأنصاري', 'Nom Fr 14', 'مروى', 'Prenom Fr 14', 'F', 1, 'email14@example.com', '321456789');
+       
+     
 
-      // Data for organes
-      await insertOrganes('Organe 1 Ar', 'Organe 1 Fr', 'Présentation 1 Ar', 'Présentation 1 Fr', 1);
-      await insertOrganes('Organe 2 Ar', 'Organe 2 Fr', 'Présentation 2 Ar', 'Présentation 2 Fr', 2);
-
-      // Data for Deputes
-      await insertDeputes('Code1', 'Nom1 Ar', 'Nom1 Fr', 'Prenom1 Ar', 'Prenom1 Fr', 'M', 1, 'email1@example.com', '123456789');
-      await insertDeputes('Code2', 'Nom2 Ar', 'Nom2 Fr', 'Prenom2 Ar', 'Prenom2 Fr', 'F', 1, 'email2@example.com', '987654321');
 
       // Data for Deputes_organes
-      await insertDeputesOrganes(1, 1, 1, '2024-01-01', '2024-12-31', 0, 'Leg20162021', 'Leg20212026');
+// Exemple d'insertion de données pour Deputes_organes
+await insertDeputesOrganes(1, 1, 1, '2024-01-01', '2024-12-31', 0, 'Leg20162021', 'Leg20212026', 1);  // راشيد الطالبي العلمي, RNI Group, رئيس مجلس النواب
+await insertDeputesOrganes(2, 2, 2, '2024-01-01', '2024-12-31', 0, 'Leg20162021', 'Leg20212026', 2);  // محمد صباري, PAM Group, النائب الأول للرئيس
+await insertDeputesOrganes(3, 3, 3, '2024-01-01', '2024-12-31', 0, 'Leg20162021', 'Leg20212026', 3);  // عبد الصمد قيوح, Istiqlal Group, النائب الثاني للرئيس
+await insertDeputesOrganes(4, 4, 4, '2024-01-01', '2024-12-31', 0, 'Leg20162021', 'Leg20212026', 4);  // ادريس اشطيبي, Socialist Group, النائب الثالث للرئيس
+await insertDeputesOrganes(5, 5, 5, '2024-01-01', '2024-12-31', 0, 'Leg20162021', 'Leg20212026', 5);  // محمد والزين, Movement Group, النائب الرابع للرئيس
+await insertDeputesOrganes(6, 6, 6, '2024-01-01', '2024-12-31', 0, 'Leg20162021', 'Leg20212026', 6);  // محمد جودار, Constitutional Group, النائب الخامس للرئيس
+await insertDeputesOrganes(7, 7, 7, '2024-01-01', '2024-12-31', 0, 'Leg20162021', 'Leg20212026', 7);  // نادية تهامي, Progress and Socialism Group, النائبة السادسة للرئيس
+await insertDeputesOrganes(8, 1, 8, '2024-01-01', '2024-12-31', 0, 'Leg20162021', 'Leg20212026', 8);  // زينب إدحلي, RNI Group, النائبة السابعة للرئيس
+await insertDeputesOrganes(9, 1, 9, '2024-01-01', '2024-12-31', 0, 'Leg20162021', 'Leg20212026', 9);  // محمد غيات, RNI Group, النائب الثامن للرئيس
+await insertDeputesOrganes(10, 2, 10, '2024-01-01', '2024-12-31', 0, 'Leg20162021', 'Leg20212026', 10); // محمد الحموتي, PAM Group, محاسب المجلس
+await insertDeputesOrganes(11, 3, 11, '2024-01-01', '2024-12-31', 0, 'Leg20162021', 'Leg20212026' , 10); // طارق قديري, Istiqlal Group, محاسب المجلس
+await insertDeputesOrganes(12, 1, 12, '2024-01-01', '2024-12-31', 0, 'Leg20162021', 'Leg20212026', 11); // امبارك حمية, RNI Group, أمين المجلس
+await insertDeputesOrganes(13, 2, 13, '2024-01-01', '2024-12-31', 0, 'Leg20162021', 'Leg20212026', 12); // نادية بزداف, PAM Group, أمينة المجلس
+await insertDeputesOrganes(14, 3, 14, '2024-01-01', '2024-12-31', 0, 'Leg20162021', 'Leg20212026', 12); // مروى الأنصاري, Istiqlal Group, أمينة المجلس
 
       // Data for Reunion
       await insertReunion('2024-07-01', '10:00', 'Sujet Ar', 'Détails', 1, 1, 'Observation', 'Lieu', '2024-07-01');
-      await insertReunion('2024-08-01', '12:00', 'Sujet Fr', 'Détails', 2, 1, 'Obs', 'Lieu', '2024-08-01');
 
       
     });
@@ -273,7 +316,37 @@ export const insertData = async () => {
 
 
 
-
+export const getDeputesInfo = () => {
+  return new Promise((resolve, reject) => {
+    db.transaction(tx => {
+      tx.executeSql(
+        `SELECT DISTINCT
+          Deputes.Nom_Ar || ' ' || Deputes.Prenom_Ar AS name,
+          Organes.Nom_Ar AS organ_group,
+          CategorieOrganes.Nom_Ar AS title
+        FROM
+          Deputes
+        JOIN
+          Deputes_organes ON Deputes.id = Deputes_organes.DeputesId   
+        JOIN
+          Organes ON Deputes_organes.organeID = Organes.id
+        JOIN
+          CategorieOrganes ON Deputes_organes.Idcategorieorganes = CategorieOrganes.id;`,
+        [],
+        (tx, results) => {
+          let deputesInfo = [];
+          for (let i = 0; i < results.rows.length; i++) {
+            deputesInfo.push(results.rows.item(i));
+          }
+          resolve(deputesInfo);
+        },
+        error => {
+          reject(error);
+        }
+      );
+    });
+  });
+};
 
 
 // Selection methods
@@ -283,7 +356,7 @@ export const selectOrganes = async () => {
     return await new Promise((resolve, reject) => {
       db.transaction(tx => {
         tx.executeSql(
-          'SELECT * FROM organes',
+          'SELECT DISTINCT * FROM organes',
           [],
           (tx, results) => {
             const rows = results.rows.raw(); // or results.rows._array
@@ -306,7 +379,7 @@ export const selectSallesReunion = async () => {
     return await new Promise((resolve, reject) => {
       db.transaction(tx => {
         tx.executeSql(
-          'SELECT * FROM SallesReunion',
+          'SELECT DISTINCT * FROM SallesReunion',
           [],
           (tx, results) => {
             const rows = results.rows.raw(); // or results.rows._array
@@ -364,6 +437,10 @@ export const searchReunions = (selectedAuthority, location, startDate, endDate) 
     });
   });
 };
+
+
+
+
 
 
 
