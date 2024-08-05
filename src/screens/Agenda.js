@@ -167,7 +167,7 @@ const handleSearch = async () => {
 
 {meetings.length > 0 ? (
           meetings.map((meeting) => (
-            <View key={meeting.id} style={styles.agenda}>
+            <View key={`${meeting.Date_Reunion}-${meeting.Heure_Reunion}-${meeting.id}`} style={styles.agenda}>
               <View style={styles.row}>
                 <Text style={styles.boldText}>التاريخ: </Text>
                 <Text style={styles.agendaText}>{meeting.Date_Reunion}</Text>

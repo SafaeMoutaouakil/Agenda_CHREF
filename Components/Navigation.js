@@ -1,22 +1,20 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
-import { View, StyleSheet, Image } from 'react-native';
-import BackgroundImage from '../Components/BackgroundImage'; // Import du composant BackgroundImage
-
-
+import { View, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import Home from '../src/screens/Home';
 import Agenda from '../src/screens/Agenda';
 import Meeting from '../src/screens/Meeting';
 import Member from '../src/screens/Member';
+import Sidebar from '../Components/Sidebar';
 
 const Stack = createStackNavigator();
 
 const HeaderBackground = () => (
   <View style={styles.headerBackgroundContainer}>
     <Image
-      source={require('../assets/home.png')} // Votre image de fond
+      source={require('../assets/home.png')}
       style={styles.headerBackground}
-      resizeMode="cover" // Ajuste l'image pour couvrir l'arrière-plan
+      resizeMode="cover"
     />
     <Image
       style={styles.lineImage}
@@ -25,80 +23,110 @@ const HeaderBackground = () => (
     />
   </View>
 );
-const HeaderRight = () => (
-  <Image
-    source={require('../assets/image-101.png')} // Utilisation de l'image
-    style={styles.headerImage}
-    resizeMode="contain" // Ajuste l'image pour qu'elle s'adapte au conteneur
-  />
+
+const HeaderRight = ({ toggleMenu }) => (
+  <View style={styles.headerRightContainer}>
+    <Image
+      source={require('../assets/image-101.png')}
+      style={styles.headerImage}
+      resizeMode="contain"
+    />
+    <TouchableOpacity onPress={toggleMenu} style={styles.menuToggle}>
+      <Image
+        source={require('../assets/image-90.png')}
+        style={styles.menuToggleIcon}
+        resizeMode="cover"
+      />
+    </TouchableOpacity>
+  </View>
 );
 
 function Navigation() {
+  const [menuVisible, setMenuVisible] = useState(false);
+
+  const toggleMenu = () => {
+    setMenuVisible(!menuVisible);
+  };
+
   return (
-    <Stack.Navigator
-      initialRouteName="Home"
-      screenOptions={{
-        headerTitleAlign: 'center', // Centre le titre de l'en-tête
-        headerRight: () => (
-          <View style={styles.headerRight}>
-            <HeaderRight />
-          </View>
-        ),        headerTitleStyle: {
-          color: 'black', // Couleur du texte de l'en-tête
-          fontWeight: 'bold',
-        },
-        headerTintColor: 'black', // Couleur des éléments interactifs (comme les boutons)
-        headerBackground: () => <HeaderBackground />, // Ajoute l'image de fond
-      }}
-    >
-      <Stack.Screen
-        name="Home"
-        component={Home}
-        options={{ headerTitle: 'Home' }}
-      />
-      <Stack.Screen
-        name="Agenda"
-        component={Agenda}
-        options={{ headerTitle: ' اجندةالمجلس' }}
-      />
-      <Stack.Screen
-        name="Meeting"
-        component={Meeting}
-        options={{ headerTitle: 'الاجتماعات المبرمجة' }}
-      />
-      <Stack.Screen
-        name="Member"
-        component={Member}
-        options={{ headerTitle: 'اعضاء المجلس' }}
-      />
-    </Stack.Navigator>
+    <>
+      <Stack.Navigator
+        initialRouteName="Home"
+        screenOptions={{
+          headerTitleAlign: 'left',
+          headerRight: () => <HeaderRight toggleMenu={toggleMenu} />,
+          headerTitleStyle: {
+            color: 'black',
+            fontWeight: 'bold',
+          },
+          headerTintColor: 'black',
+          headerBackground: () => <HeaderBackground />,
+        }}
+      >
+        <Stack.Screen name="Home" component={Home} options={{ headerTitle: 'Home' }} />
+        <Stack.Screen name="Agenda" component={Agenda} options={{ headerTitle: 'اجندة المجلس' }} />
+        <Stack.Screen name="Meeting" component={Meeting} options={{ headerTitle: 'الاجتماعات المبرمجة' }} />
+        <Stack.Screen name="Member" component={Member} options={{ headerTitle: 'اعضاء المجلس' }} />
+      </Stack.Navigator>
+      <Sidebar menuVisible={menuVisible} toggleMenu={toggleMenu} />
+      {menuVisible && (
+        <TouchableOpacity onPress={toggleMenu} style={styles.menuToggleOverlay}>
+          <Image
+            source={require('../assets/image-90.png')}
+            style={styles.menuToggleIconOverlay}
+            resizeMode="cover"
+          />
+        </TouchableOpacity>
+      )}
+    </>
   );
 }
 
 export default Navigation;
 
 const styles = StyleSheet.create({
-  headerRight: {
-    paddingRight: 10, // Ajuste l'espacement à droite
+  headerRightContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingRight: 10,
   },
   headerImage: {
-    width: 120, // Ajuste la largeur de l'image
-    height: 50, // Ajuste la hauteur de l'image
+    width: 120,
+    height: 50,
+  },
+  menuToggle: {
+    marginLeft: 10,
+  },
+  menuToggleIcon: {
+    width: 30,
+    height: 30,
   },
   headerBackgroundContainer: {
     flex: 1,
     width: '100%',
     height: '100%',
-    justifyContent: 'flex-end', // Aligne la ligne en bas
+    justifyContent: 'flex-end',
   },
   headerBackground: {
     flex: 1,
     width: '100%',
     height: '100%',
+    left: 15,
   },
   lineImage: {
-    width: '100%', // Ajuste la largeur pour couvrir toute la largeur
-    height: 5, // Ajuste la hauteur de l'image de la ligne
-    
+    width: '100%',
+    height: 5,
+  },
+  menuToggleOverlay: {
+    position: 'absolute',
+    top: 15,
+    right: 20,
+    zIndex: 2000,
+    marginLeft: 10,
+  },
+  menuToggleIconOverlay: {
+    width: 30,
+    height: 30,
+    left:10,
   },
 });

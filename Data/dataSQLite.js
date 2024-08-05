@@ -363,7 +363,7 @@ export const selectOrganes = async () => {
     return await new Promise((resolve, reject) => {
       db.transaction(tx => {
         tx.executeSql(
-          'SELECT  * FROM organes',
+          'SELECT  DISTINCT Nom_Ar FROM organes',
           [],
           (tx, results) => {
             const rows = results.rows.raw(); // or results.rows._array
@@ -464,6 +464,26 @@ export const searchReunions = (selectedAuthority, location, startDate, endDate) 
     });
   });
 };
+
+
+
+
+// Fetch data functions
+export const getLastMeetings = () => {
+  return new Promise((resolve, reject) => {
+    db.transaction(tx => {
+      tx.executeSql(
+        'SELECT * FROM Reunion ORDER BY Date_Reunion DESC LIMIT 10',
+        [],
+        (_, { rows: { _array } }) => resolve(_array),
+        (error) => reject(error)
+      );
+    });
+  });
+};
+
+
+
 
   
   

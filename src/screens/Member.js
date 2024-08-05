@@ -21,6 +21,7 @@ const Member = () => {
 
   return (
     <ImageBackground source={require('../../assets/home.png')} style={styles.homeIcon}>
+      
        <View> 
        <FlatList
           data={deputesInfo}

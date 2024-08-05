@@ -1,11 +1,13 @@
-
-
-import React , {useEffect} from "react";
-import { StyleSheet, View, Image, Text, ImageBackground,TouchableOpacity } from "react-native";
+import React, { useState, useEffect } from "react";
+import { StyleSheet, View, Image, Text, ImageBackground, TouchableOpacity, Alert } from "react-native";
 import { Color, FontFamily, FontSize } from "../../GlobalStyles";
 import { useNavigation } from '@react-navigation/native';
-import {initializeDatabase} from '../../Data/dataSQLite'
+import { initializeDatabase } from '../../Data/dataSQLite';
+
 const Home = () => {
+  
+  const navigation = useNavigation();
+
   useEffect(() => {
     const setupDatabase = async () => {
       try {
@@ -19,7 +21,9 @@ const Home = () => {
 
     setupDatabase();
   }, []);
-  const navigation = useNavigation();
+
+ 
+
   return (
     <ImageBackground
       style={styles.homeIcon}
@@ -27,6 +31,7 @@ const Home = () => {
       source={require("../../assets/home.png")}
     >
       
+
       <Text style={[styles.text, styles.textTypo1]}>الرئيسية</Text>
       <Text style={[styles.text1, styles.textTypo1]}>الاعضاء</Text>
       <View style={[styles.homeChild, styles.homeLayout]} />
@@ -67,11 +72,47 @@ const Home = () => {
           source={require("../../assets/users.png")}
         />
       </TouchableOpacity>
+
+      
     </ImageBackground>
   );
 };
 
 const styles = StyleSheet.create({
+  sidebar: {
+    position: 'absolute',
+    top: 0,
+    right: 0, // Position the sidebar to the right
+    width: 200,
+    height: '100%',
+    backgroundColor: Color.colorFirebrick,
+    zIndex: 1000,
+  },
+  sidebarBackground: {
+    position: 'absolute',
+    width: '100%',
+    height: '100%',
+  },
+  menuItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    padding: 10,
+    borderBottomWidth: 1,
+    borderBottomColor: '#fff',
+  },
+  menuIcon: {
+    top:65,
+    width: 55,
+    height: 40,
+    marginRight: 10,
+    left : 140,
+  },
+  menuText: {
+    color: '#fff',
+    fontSize: 30,
+    top:30,
+    left :-75,
+  },
   textTypo1: {
     textShadowRadius: 4,
     textShadowOffset: {
@@ -105,7 +146,6 @@ const styles = StyleSheet.create({
     position: "absolute",
   },
   textTypo: {
-    
     lineHeight: 44,
     fontSize: FontSize.m3DisplaySmall_size,
     textAlign: "right",
@@ -145,7 +185,6 @@ const styles = StyleSheet.create({
     position: "absolute",
   },
   text: {
-    
     left: 284,
   },
   text1: {
@@ -186,7 +225,6 @@ const styles = StyleSheet.create({
     top: 345,
     left: 290,
     width: 70,
-    
   },
   text4: {
     left: -150,
@@ -209,6 +247,17 @@ const styles = StyleSheet.create({
     height: 932,
     overflow: "hidden",
     width: "100%",
+  },
+  menuToggle: {
+    position: 'absolute',
+    top: 40,
+    right: 20, // Position the toggle button to the right
+  },
+  menuToggleIcon: {
+    width: 30,
+    height: 30,
+    top :-35,
+    left:-200,
   },
 });
 
