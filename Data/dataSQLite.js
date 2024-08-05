@@ -94,8 +94,7 @@ export const createTables = async () => {
         Lieu TEXT,
         Update_Date TEXT,
         FOREIGN KEY(IDorganes) REFERENCES organes(id),
-        FOREIGN KEY(Salles_ID) REFERENCES SallesReunion(id),
-        UNIQUE(IDorganes, Salles_ID)
+        FOREIGN KEY(Salles_ID) REFERENCES SallesReunion(id)
       );`,
       [],
       () => { console.log('Table Reunion created successfully'); },
@@ -155,21 +154,7 @@ export const insertDeputes = (code, Nom_Ar, Nom_Fr, Prenom_Ar, Prenom_Fr, Sexe, 
   });
 };
 
-export const insertReunion = (Date_Reunion, Heure_Reunion, Sujet_Ar, Details, IDorganes, Salles_ID, Observation, Lieu, Update_Date) => {
-  return new Promise((resolve, reject) => {
-    db.transaction(tx => {
-      tx.executeSql(
-        'INSERT INTO Reunion (Date_Reunion, Heure_Reunion, Sujet_Ar, Details, IDorganes, Salles_ID, Observation, Lieu, Update_Date) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)',
-        [Date_Reunion, Heure_Reunion, Sujet_Ar, Details, IDorganes, Salles_ID, Observation, Lieu, Update_Date],
-        (_, result) => resolve(result),
-        (_, error) => {
-          console.log('Error inserting into Reunion:', error.message);
-          reject(error);
-        }
-      );
-    });
-  });
-};
+
 
 
 
@@ -221,6 +206,25 @@ export const insertOrganes = (Nom_Ar, Nom_Fr, Presentation_Ar, Presentation_Fr) 
     });
   });
 };
+
+
+export const insertReunion = (Date_Reunion, Heure_Reunion, Sujet_Ar, Details, IDorganes, Salles_ID, Observation, Lieu, Update_Date) => {
+  return new Promise((resolve, reject) => {
+    db.transaction(tx => {
+      tx.executeSql(
+        'INSERT INTO Reunion (Date_Reunion, Heure_Reunion, Sujet_Ar, Details, IDorganes, Salles_ID, Observation, Lieu, Update_Date) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)',
+        [Date_Reunion, Heure_Reunion, Sujet_Ar, Details, IDorganes, Salles_ID, Observation, Lieu, Update_Date],
+        (_, result) => resolve(result),
+        (_, error) => {
+          console.log('Error inserting into Reunion:', error.message);
+          reject(error);
+        }
+      );
+    });
+  });
+};
+
+
 
 export const insertCategorieOrganes = (Nom_Ar, Nom_Fr) => {
   return new Promise((resolve, reject) => {
@@ -306,8 +310,9 @@ await insertDeputesOrganes(11, 3, 11, '2024-01-01', '2024-12-31', 0, 'Leg2016202
 await insertDeputesOrganes(12, 1, 12, '2024-01-01', '2024-12-31', 0, 'Leg20162021', 'Leg20212026', 11); // امبارك حمية, RNI Group, أمين المجلس
 await insertDeputesOrganes(13, 2, 13, '2024-01-01', '2024-12-31', 0, 'Leg20162021', 'Leg20212026', 12); // نادية بزداف, PAM Group, أمينة المجلس
 await insertDeputesOrganes(14, 3, 14, '2024-01-01', '2024-12-31', 0, 'Leg20162021', 'Leg20212026', 12); // مروى الأنصاري, Istiqlal Group, أمينة المجلس
-
-
+//reunions
+await insertReunion('2024-08-06', '14:00', 'Sujet Ar 2', 'Détails 2', 1, 1, 'Observation 2', 'Lieu 2', '2024-07-02');
+await insertReunion('2024-08-10', '16:00', 'Sujet Ar 3', 'Détails 3', 1, 1, 'Observation 3', 'Lieu 3', '2024-07-03');
       
     });
   } catch (error) {
@@ -315,20 +320,7 @@ await insertDeputesOrganes(14, 3, 14, '2024-01-01', '2024-12-31', 0, 'Leg2016202
   }
 };
 
-const insertAndVerifyReunion = async () => {
-  try {
-    await insertReunion('2024-08-06', '14:00', 'Sujet Ar 2', 'Détails 2', 1, 1, 'Observation 2', 'Lieu 2', '2024-07-02');
-    console.log('Insertion réussie pour la réunion du 2024-08-06');
 
-    await insertReunion('2024-08-10', '16:00', 'Sujet Ar 3', 'Détails 3', 1, 1, 'Observation 3', 'Lieu 3', '2024-07-03');
-    console.log('Insertion réussie pour la réunion du 2024-08-10');
-    
-    // Vous pouvez également afficher le message de confirmation de l'insertion ici
-    console.log('Toutes les données ont été insérées avec succès');
-  } catch (error) {
-    console.error('Erreur lors de l\'insertion:', error);
-  }
-};
 
 
 export const getDeputesInfo = () => {
@@ -417,6 +409,11 @@ export const selectSallesReunion = async () => {
 
 
 
+
+
+
+
+
 // Ajouter cette méthode dans dataSQLite.js
 
 export const searchReunions = (selectedAuthority, location, startDate, endDate) => {
@@ -456,15 +453,18 @@ export const searchReunions = (selectedAuthority, location, startDate, endDate) 
           for (let i = 0; i < results.rows.length; i++) {
             meetings.push(results.rows.item(i));
           }
+          console.log('Résultats de la recherche:', meetings);
           resolve(meetings);
         },
         (tx, error) => {
-          reject('Error fetching meetings: ' + error.message);
+          console.error('Error executing search query:', error.message);
+          reject(error);
         }
       );
     });
   });
 };
+
   
   
 
@@ -483,8 +483,6 @@ export const initializeDatabase = async () => {
   try {
     await createTables();
     await insertData(); // Populate the database with initial data
-    await insertAndVerifyReunion();
-
   } catch (error) {
     console.log('Error initializing  database: ' + error.message);
   }

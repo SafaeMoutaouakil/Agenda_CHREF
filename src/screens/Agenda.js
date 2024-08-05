@@ -5,7 +5,7 @@ import moment from 'moment';
 import { Picker } from '@react-native-picker/picker';
 import { useNavigation } from '@react-navigation/native';
 import { Color, FontFamily, FontSize, Border } from "../../GlobalStyles";
-import { getAuthorities, getLocations, getMeetings, searchReunions, selectOrganes, selectSallesReunion } from '../../Data/dataSQLite';
+import { getAuthorities, getLocations, getMeetings, searchReunions, selectOrganes, selectSallesReunion, getAllReunions  } from '../../Data/dataSQLite';
 
 
 
@@ -167,7 +167,7 @@ const handleSearch = async () => {
 
 {meetings.length > 0 ? (
           meetings.map((meeting) => (
-            <View key={meeting} style={styles.agenda}>
+            <View key={meeting.id} style={styles.agenda}>
               <View style={styles.row}>
                 <Text style={styles.boldText}>التاريخ: </Text>
                 <Text style={styles.agendaText}>{meeting.Date_Reunion}</Text>
