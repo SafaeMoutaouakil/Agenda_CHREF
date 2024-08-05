@@ -40,7 +40,7 @@ export const getConnectionStatus = async () => {
 export const createTables = async () => {
   db.transaction(tx => {
     tx.executeSql(
-      `CREATE TABLE IF NOT EXISTS Deputes (
+     `CREATE TABLE IF NOT EXISTS Deputes (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         code TEXT,
         Nom_Ar TEXT,
@@ -51,7 +51,7 @@ export const createTables = async () => {
         Actif INTEGER CHECK (Actif IN (0, 1)),
         Email TEXT,
         Telephone TEXT
-      )`,
+      );`,
       [],
       () => { console.log('Table Deputes created successfully'); },
       (error) => { console.log('Error creating Deputes table: ' + error.message); }
@@ -62,7 +62,7 @@ export const createTables = async () => {
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         Nom_Ar TEXT,
         Nom_Fr TEXT
-      )`,
+      );`,
       [],
       () => { console.log('Table categorieorganes created successfully'); },
       (error) => { console.log('Error creating categorieorganes table: ' + error.message); }
@@ -75,7 +75,7 @@ export const createTables = async () => {
         Nom_Fr TEXT,
         Presentation_Ar TEXT,
         Presentation_Fr TEXT
-      )`,
+      );`,
       [],
       () => { console.log('Table organes created successfully'); },
       (error) => { console.log('Error creating organes table: ' + error.message); }
@@ -96,8 +96,7 @@ export const createTables = async () => {
         FOREIGN KEY(IDorganes) REFERENCES organes(id),
         FOREIGN KEY(Salles_ID) REFERENCES SallesReunion(id),
         UNIQUE(IDorganes, Salles_ID)
-
-      )`,
+      );`,
       [],
       () => { console.log('Table Reunion created successfully'); },
       (error) => { console.log('Error creating Reunion table: ' + error.message); }
@@ -110,7 +109,7 @@ export const createTables = async () => {
         Salle_Fr TEXT,
         Order_ INTEGER,
         Flag INTEGER
-      )`,
+      );`,
       [],
       () => { console.log('Table SallesReunion created successfully'); },
       (error) => { console.log('Error creating SallesReunion table: ' + error.message); }
@@ -131,7 +130,7 @@ export const createTables = async () => {
         FOREIGN KEY(DeputesId) REFERENCES Deputes(id),
         FOREIGN KEY(organeID) REFERENCES organes(id),
         FOREIGN KEY(Idcategorieorganes) REFERENCES categorieorganes(id)
-      )`,
+      );`,
       [],
       () => { console.log('Table Deputes_organes created successfully'); },
       (error) => { console.log('Error creating Deputes_organes table: ' + error.message); }
@@ -164,13 +163,16 @@ export const insertReunion = (Date_Reunion, Heure_Reunion, Sujet_Ar, Details, ID
         [Date_Reunion, Heure_Reunion, Sujet_Ar, Details, IDorganes, Salles_ID, Observation, Lieu, Update_Date],
         (_, result) => resolve(result),
         (_, error) => {
-          console.log('Error inserting into Reunion:', error);
+          console.log('Error inserting into Reunion:', error.message);
           reject(error);
         }
       );
     });
   });
 };
+
+
+
 
 export const insertSallesReunion = (Salle_Ar, Salle_Fr, Order_, Flag) => {
   return new Promise((resolve, reject) => {
@@ -188,12 +190,12 @@ export const insertSallesReunion = (Salle_Ar, Salle_Fr, Order_, Flag) => {
   });
 };
 
-export const insertDeputesOrganes = (DeputesId, organeID, RoleID, Date_Debut, Date_Fin, Inactif, Leg20162021, Leg20212026,  Idcategorieorganes) => {
+export const insertDeputesOrganes = (DeputesId, organeID, RoleID, Date_Debut, Date_Fin, Inactif, Leg20162021, Leg20212026, Idcategorieorganes) => {
   return new Promise((resolve, reject) => {
     db.transaction(tx => {
       tx.executeSql(
-        'INSERT INTO Deputes_organes (DeputesId, organeID, RoleID, Date_Debut, Date_Fin, Inactif, Leg20162021, Leg20212026,  Idcategorieorganes) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)',
-        [DeputesId, organeID, RoleID, Date_Debut, Date_Fin, Inactif, Leg20162021, Leg20212026,  Idcategorieorganes],
+        'INSERT INTO Deputes_organes (DeputesId, organeID, RoleID, Date_Debut, Date_Fin, Inactif, Leg20162021, Leg20212026, Idcategorieorganes) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)',
+        [DeputesId, organeID, RoleID, Date_Debut, Date_Fin, Inactif, Leg20162021, Leg20212026, Idcategorieorganes],
         (_, result) => resolve(result),
         (_, error) => {
           console.log('Error inserting into Deputes_organes:', error);
@@ -266,6 +268,8 @@ export const insertData = async () => {
        await insertOrganes('الفريق الحركي', 'Movement Group', 'Présentation en Arabe', 'Presentation in French');
        await insertOrganes('الفريق الدستوري الديمقراطي الاجتماعي', 'Constitutional Group', 'Présentation en Arabe', 'Presentation in French');
        await insertOrganes('فريق التقدم والاشتراكية', 'Progress and Socialism Group', 'Présentation en Arabe', 'Presentation in French');
+      
+      
  
        // Insert deputies
        await insertDeputes('Code1', 'الطالبي العلمي', 'Nom Fr 1', 'راشيد', 'Prenom Fr 1', 'M', 1, 'email1@example.com', '123456789');
@@ -303,8 +307,6 @@ await insertDeputesOrganes(12, 1, 12, '2024-01-01', '2024-12-31', 0, 'Leg2016202
 await insertDeputesOrganes(13, 2, 13, '2024-01-01', '2024-12-31', 0, 'Leg20162021', 'Leg20212026', 12); // نادية بزداف, PAM Group, أمينة المجلس
 await insertDeputesOrganes(14, 3, 14, '2024-01-01', '2024-12-31', 0, 'Leg20162021', 'Leg20212026', 12); // مروى الأنصاري, Istiqlal Group, أمينة المجلس
 
-      // Data for Reunion
-      await insertReunion('2024-07-01', '10:00', 'Sujet Ar', 'Détails', 1, 1, 'Observation', 'Lieu', '2024-07-01');
 
       
     });
@@ -313,14 +315,27 @@ await insertDeputesOrganes(14, 3, 14, '2024-01-01', '2024-12-31', 0, 'Leg2016202
   }
 };
 
+const insertAndVerifyReunion = async () => {
+  try {
+    await insertReunion('2024-08-06', '14:00', 'Sujet Ar 2', 'Détails 2', 1, 1, 'Observation 2', 'Lieu 2', '2024-07-02');
+    console.log('Insertion réussie pour la réunion du 2024-08-06');
 
+    await insertReunion('2024-08-10', '16:00', 'Sujet Ar 3', 'Détails 3', 1, 1, 'Observation 3', 'Lieu 3', '2024-07-03');
+    console.log('Insertion réussie pour la réunion du 2024-08-10');
+    
+    // Vous pouvez également afficher le message de confirmation de l'insertion ici
+    console.log('Toutes les données ont été insérées avec succès');
+  } catch (error) {
+    console.error('Erreur lors de l\'insertion:', error);
+  }
+};
 
 
 export const getDeputesInfo = () => {
   return new Promise((resolve, reject) => {
     db.transaction(tx => {
       tx.executeSql(
-        `SELECT DISTINCT
+       ` SELECT DISTINCT
           Deputes.Nom_Ar || ' ' || Deputes.Prenom_Ar AS name,
           Organes.Nom_Ar AS organ_group,
           CategorieOrganes.Nom_Ar AS title
@@ -356,7 +371,7 @@ export const selectOrganes = async () => {
     return await new Promise((resolve, reject) => {
       db.transaction(tx => {
         tx.executeSql(
-          'SELECT DISTINCT * FROM organes',
+          'SELECT  * FROM organes',
           [],
           (tx, results) => {
             const rows = results.rows.raw(); // or results.rows._array
@@ -379,7 +394,7 @@ export const selectSallesReunion = async () => {
     return await new Promise((resolve, reject) => {
       db.transaction(tx => {
         tx.executeSql(
-          'SELECT DISTINCT * FROM SallesReunion',
+          'SELECT * FROM SallesReunion',
           [],
           (tx, results) => {
             const rows = results.rows.raw(); // or results.rows._array
@@ -397,12 +412,17 @@ export const selectSallesReunion = async () => {
   }
 };
 
+
+
+
+
+
 // Ajouter cette méthode dans dataSQLite.js
 
 export const searchReunions = (selectedAuthority, location, startDate, endDate) => {
   return new Promise((resolve, reject) => {
     db.transaction(tx => {
-      let query = 'SELECT  DISTINCT * FROM Reunion WHERE 1=1';
+      let query = 'SELECT DISTINCT Date_Reunion, Heure_Reunion, Sujet_Ar, Details, IDorganes, Salles_ID, Observation, Lieu FROM Reunion WHERE 1=1';
       let params = [];
 
       if (selectedAuthority) {
@@ -425,18 +445,31 @@ export const searchReunions = (selectedAuthority, location, startDate, endDate) 
         params.push(endDate);
       }
 
+      console.log('Executing query:', query);
+      console.log('With params:', params);
+
       tx.executeSql(
         query,
         params,
-        (_, result) => resolve(result.rows.raw()),
-        (_, error) => {
-          console.log('Error searching reunions:', error);
-          reject(error);
+        (tx, results) => {
+          const meetings = [];
+          for (let i = 0; i < results.rows.length; i++) {
+            meetings.push(results.rows.item(i));
+          }
+          resolve(meetings);
+        },
+        (tx, error) => {
+          reject('Error fetching meetings: ' + error.message);
         }
       );
     });
   });
 };
+  
+  
+
+
+
 
 
 
@@ -450,6 +483,8 @@ export const initializeDatabase = async () => {
   try {
     await createTables();
     await insertData(); // Populate the database with initial data
+    await insertAndVerifyReunion();
+
   } catch (error) {
     console.log('Error initializing  database: ' + error.message);
   }

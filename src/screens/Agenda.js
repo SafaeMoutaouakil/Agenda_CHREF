@@ -66,15 +66,32 @@ const handleEndDateConfirm = (event, selectedDate) => {
 };
 
 const handleSearch = async () => {
-  const results = await searchReunions(
-    selectedAuthority,
-    location,
-    moment(startDate).format('YYYY-MM-DD'),
-    moment(endDate).format('YYYY-MM-DD')
-  );
-  console.log('Résultats de la recherche:', results);
-  setMeetings(results);
+  try {
+    const formattedStartDate = moment(startDate).format('YYYY-MM-DD');
+    const formattedEndDate = moment(endDate).format('YYYY-MM-DD');
+    
+    console.log('Searching for meetings with params:', {
+      selectedAuthority,
+      location,
+      startDate: formattedStartDate,
+      endDate: formattedEndDate,
+    });
+
+    const results = await searchReunions(
+      selectedAuthority,
+      location,
+      formattedStartDate,
+      formattedEndDate
+    );
+
+    console.log('Résultats de la recherche:', results);
+    setMeetings(results);
+  } catch (error) {
+    console.error('Error during search:', error);
+  }
 };
+
+
 
   return (
     <ImageBackground
@@ -150,7 +167,7 @@ const handleSearch = async () => {
 
 {meetings.length > 0 ? (
           meetings.map((meeting) => (
-            <View key={meeting.id} style={styles.agenda}>
+            <View key={meeting} style={styles.agenda}>
               <View style={styles.row}>
                 <Text style={styles.boldText}>التاريخ: </Text>
                 <Text style={styles.agendaText}>{meeting.Date_Reunion}</Text>
