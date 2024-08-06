@@ -50,7 +50,8 @@ export const createTables = async () => {
         Sexe TEXT,
         Actif INTEGER CHECK (Actif IN (0, 1)),
         Email TEXT,
-        Telephone TEXT
+        Telephone TEXT,
+        Image TEXT
       );`,
       [],
       () => { console.log('Table Deputes created successfully'); },
@@ -138,12 +139,12 @@ export const createTables = async () => {
 };
 
 // Insert functions
-export const insertDeputes = (code, Nom_Ar, Nom_Fr, Prenom_Ar, Prenom_Fr, Sexe, Actif, Email, Telephone) => {
+export const insertDeputes = (code, Nom_Ar, Nom_Fr, Prenom_Ar, Prenom_Fr, Sexe, Actif, Email, Telephone, Image) => {
   return new Promise((resolve, reject) => {
     db.transaction(tx => {
       tx.executeSql(
-        'INSERT INTO Deputes (code, Nom_Ar, Nom_Fr, Prenom_Ar, Prenom_Fr, Sexe, Actif, Email, Telephone) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)',
-        [code, Nom_Ar, Nom_Fr, Prenom_Ar, Prenom_Fr, Sexe, Actif, Email, Telephone],
+        'INSERT INTO Deputes (code, Nom_Ar, Nom_Fr, Prenom_Ar, Prenom_Fr, Sexe, Actif, Email, Telephone, Image) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
+        [code, Nom_Ar, Nom_Fr, Prenom_Ar, Prenom_Fr, Sexe, Actif, Email, Telephone, Image],
         (_, result) => resolve(result),
         (_, error) => {
           console.log('Error inserting into Deputes:', error);
@@ -276,20 +277,20 @@ export const insertData = async () => {
       
  
        // Insert deputies
-       await insertDeputes('Code1', 'الطالبي العلمي', 'Nom Fr 1', 'راشيد', 'Prenom Fr 1', 'M', 1, 'email1@example.com', '123456789');
-       await insertDeputes('Code2', 'صباري', 'Nom Fr 2', 'محمد', 'Prenom Fr 2', 'M', 1, 'email2@example.com', '987654321');
-       await insertDeputes('Code3', 'قيوح', 'Nom Fr 3', 'عبد الصمد', 'Prenom Fr 3', 'M', 1, 'email3@example.com', '123456123');
-       await insertDeputes('Code4', 'اشطيبي', 'Nom Fr 4', 'ادريس', 'Prenom Fr 4', 'M', 1, 'email4@example.com', '321654987');
-       await insertDeputes('Code5', 'والزين', 'Nom Fr 5', 'محمد', 'Prenom Fr 5', 'M', 1, 'email5@example.com', '456789123');
-       await insertDeputes('Code6', 'جودار', 'Nom Fr 6', 'محمد', 'Prenom Fr 6', 'M', 1, 'email6@example.com', '654123789');
-       await insertDeputes('Code7', 'تهامي', 'Nom Fr 7', 'نادية', 'Prenom Fr 7', 'F', 1, 'email7@example.com', '789123456');
-       await insertDeputes('Code8', 'إدحلي', 'Nom Fr 8', 'زينب', 'Prenom Fr 8', 'F', 1, 'email8@example.com', '321987456');
-       await insertDeputes('Code9', 'غيات', 'Nom Fr 9', 'محمد', 'Prenom Fr 9', 'M', 1, 'email9@example.com', '654789321');
-       await insertDeputes('Code10', 'الحموتي', 'Nom Fr 10', 'محمد', 'Prenom Fr 10', 'M', 1, 'email10@example.com', '987321456');
-       await insertDeputes('Code11', 'قديري', 'Nom Fr 11', 'طارق', 'Prenom Fr 11', 'M', 1, 'email11@example.com', '123654789');
-       await insertDeputes('Code12', 'حمية', 'Nom Fr 12', 'امبارك', 'Prenom Fr 12', 'M', 1, 'email12@example.com', '456321987');
-       await insertDeputes('Code13', 'بزداف', 'Nom Fr 13', 'نادية', 'Prenom Fr 13', 'F', 1, 'email13@example.com', '789654123');
-       await insertDeputes('Code14', 'الأنصاري', 'Nom Fr 14', 'مروى', 'Prenom Fr 14', 'F', 1, 'email14@example.com', '321456789');
+       await insertDeputes('Code1', 'الطالبي العلمي', 'Nom Fr 1', 'راشيد', 'Prenom Fr 1', 'M', 1, 'email1@example.com', '123456789', 'image-1.png');
+       await insertDeputes('Code2', 'صباري', 'Nom Fr 2', 'محمد', 'Prenom Fr 2', 'M', 1, 'email2@example.com', '987654321', 'image-2.png');
+       await insertDeputes('Code3', 'قيوح', 'Nom Fr 3', 'عبد الصمد', 'Prenom Fr 3', 'M', 1, 'email3@example.com', '123456123', 'image-3.png');
+       await insertDeputes('Code4', 'اشطيبي', 'Nom Fr 4', 'ادريس', 'Prenom Fr 4', 'M', 1, 'email4@example.com', '321654987', 'image-4.png');
+       await insertDeputes('Code5', 'والزين', 'Nom Fr 5', 'محمد', 'Prenom Fr 5', 'M', 1, 'email5@example.com', '456789123', 'image-5.png');
+       await insertDeputes('Code6', 'جودار', 'Nom Fr 6', 'محمد', 'Prenom Fr 6', 'M', 1, 'email6@example.com', '654123789', 'image-6.png');
+       await insertDeputes('Code7', 'تهامي', 'Nom Fr 7', 'نادية', 'Prenom Fr 7', 'F', 1, 'email7@example.com', '789123456', 'image-7.png');
+       await insertDeputes('Code8', 'إدحلي', 'Nom Fr 8', 'زينب', 'Prenom Fr 8', 'F', 1, 'email8@example.com', '321987456', 'image-8.png');
+       await insertDeputes('Code9', 'غيات', 'Nom Fr 9', 'محمد', 'Prenom Fr 9', 'M', 1, 'email9@example.com', '654789321', 'image-9.png');
+       await insertDeputes('Code10', 'الحموتي', 'Nom Fr 10', 'محمد', 'Prenom Fr 10', 'M', 1, 'email10@example.com', '987321456', 'image-10.png');
+       await insertDeputes('Code11', 'قديري', 'Nom Fr 11', 'طارق', 'Prenom Fr 11', 'M', 1, 'email11@example.com', '123654789', 'image-11.png');
+       await insertDeputes('Code12', 'حمية', 'Nom Fr 12', 'امبارك', 'Prenom Fr 12', 'M', 1, 'email12@example.com', '456321987', 'image-12.png');
+       await insertDeputes('Code13', 'بزداف', 'Nom Fr 13', 'نادية', 'Prenom Fr 13', 'F', 1, 'email13@example.com', '789654123','image-13.png');
+       await insertDeputes('Code14', 'الأنصاري', 'Nom Fr 14', 'مروى', 'Prenom Fr 14', 'F', 1, 'email14@example.com', '321456789', 'image-14.png');
        
      
 
@@ -330,7 +331,8 @@ export const getDeputesInfo = () => {
        ` SELECT DISTINCT
           Deputes.Nom_Ar || ' ' || Deputes.Prenom_Ar AS name,
           Organes.Nom_Ar AS organ_group,
-          CategorieOrganes.Nom_Ar AS title
+          CategorieOrganes.Nom_Ar AS title,
+          Deputes.Image AS Image
         FROM
           Deputes
         JOIN

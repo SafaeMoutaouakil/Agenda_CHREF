@@ -18,6 +18,45 @@ const Member = () => {
       });
   }, []);
 
+  const getImageSource = (imageName) => {
+    switch (imageName) {
+      case 'image-1.png':
+        return require('../../assets/image-1.png');
+      case 'image-2.png':
+          return require('../../assets/image-2.png');
+      case 'image-3.png':
+            return require('../../assets/image-3.png'); 
+      case 'image-4.png':
+              return require('../../assets/image-4.png');          
+    
+              case 'image-5.png':
+                return require('../../assets/image-5.png');
+                case 'image-6.png':
+        return require('../../assets/image-6.png');
+        case 'image-7.png':
+        return require('../../assets/image-7.png');
+        case 'image-8.png':
+        return require('../../assets/image-8.png');
+        case 'image-9.png':
+        return require('../../assets/image-9.png');
+        case 'image-10.png':
+        return require('../../assets/image-10.png');
+        case 'image-11.png':
+        return require('../../assets/image-11.png');
+        case 'image-12.png':
+        return require('../../assets/image-12.png');
+        case 'image-13.png':
+        return require('../../assets/image-13.png');
+        case 'image-14.png':
+        return require('../../assets/image-14.png');
+        case 'image-10.png':
+        return require('../../assets/image-10.png');
+
+      default:
+        return require('../../assets/image-110.png'); // Image par défaut si aucune correspondance
+    }
+  };
+
 
   return (
     <ImageBackground source={require('../../assets/home.png')} style={styles.homeIcon}>
@@ -28,7 +67,7 @@ const Member = () => {
           keyExtractor={(item, index) => index.toString()}
           renderItem={({ item }) => (
             <View style={styles.card}>
-              <Image source={require('../../assets/image-111.png')} style={styles.image} />
+              <Image source={getImageSource(item.Image)} style={styles.image} />
               <Text style={styles.name}>{item.name}</Text>
               <Text style={styles.group}>{item.organ_group}</Text>
               <Text style={styles.title}>{item.title}</Text>
