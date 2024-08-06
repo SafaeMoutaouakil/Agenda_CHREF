@@ -39,11 +39,11 @@ const Sidebar = ({ menuVisible, toggleMenu }) => {
 const styles = StyleSheet.create({
   sidebar: {
     position: 'absolute',
-    top: 52,
+    top: 0,
     right: 0,
     width: 200,
     height: '100%',
-    backgroundColor: '#A52A2A',
+    
     zIndex: 1000,
     paddingTop: 100, // Pour éviter le chevauchement avec le header
     alignItems: 'center',
@@ -62,10 +62,12 @@ const styles = StyleSheet.create({
     width: 55,
     height: 40,
     marginRight: 10,
+    left:80,
   },
   menuText: {
     color: '#fff',
     fontSize: 20, // Taille de police ajustée pour s'adapter mieux
+    left:-60,
   },
 });
 

@@ -11,8 +11,15 @@ const Meeting = () => {
     const fetchData = async () => {
       try {
         const currentMonth = new Date().getMonth() + 1;
-        const meetingsData = await getMeetingsByMonth(currentMonth);
-        setMeetings(meetingsData || []); // Ensure meetings is an array
+        let meetingsData = await getMeetingsByMonth(currentMonth);
+
+        // Supprimer les doublons
+        const uniqueMeetings = Array.from(new Set(meetingsData.map(meeting => meeting.id)))
+          .map(id => {
+            return meetingsData.find(meeting => meeting.id === id);
+          });
+
+        setMeetings(uniqueMeetings || []); // Ensure meetings is an array
 
         const authoritiesData = await SelectOrganes();
         setAuthorities(authoritiesData || []); // Ensure authorities is an array

@@ -112,16 +112,17 @@ const handleSearch = async () => {
         />
         
         <View style={styles.pickerContainer}>
-          <Picker
-            selectedValue={selectedAuthority}
-            style={styles.picker}
-            onValueChange={(itemValue) => setSelectedAuthority(itemValue)}
-          >
-            <Picker.Item label="اختر الهيئة" value={null} enabled={false} />
-            {authorities.map((authority) => (
-                  <Picker.Item key={authority.id} label={authority.Nom_Ar} value={authority.id} />
-                ))}
-          </Picker>
+        <Picker
+  selectedValue={selectedAuthority}
+  style={styles.picker}
+  onValueChange={(itemValue) => setSelectedAuthority(itemValue)}
+>
+  <Picker.Item label="اختر الهيئة" value={null} enabled={false} />
+  {authorities.map((authority) => (
+    <Picker.Item key={authority.id} label={authority.Nom_Ar} value={authority.id} />
+  ))}
+</Picker>
+
         </View>
       </View>
 
@@ -167,7 +168,7 @@ const handleSearch = async () => {
 
 {meetings.length > 0 ? (
           meetings.map((meeting) => (
-            <View key={`${meeting.Date_Reunion}-${meeting.Heure_Reunion}-${meeting.id}`} style={styles.agenda}>
+            <View key={meeting.id} style={styles.agenda}>
               <View style={styles.row}>
                 <Text style={styles.boldText}>التاريخ: </Text>
                 <Text style={styles.agendaText}>{meeting.Date_Reunion}</Text>

@@ -380,13 +380,12 @@ export const selectOrganes = async () => {
     throw error; // Optionally rethrow the error if needed
   }
 };
-
 export const SelectOrganes = async () => {
   try {
     return await new Promise((resolve, reject) => {
       db.transaction(tx => {
         tx.executeSql(
-          'SELECT * FROM organes',
+          'SELECT DISTINCT * FROM organes', // Ajout de DISTINCT
           [],
           (tx, results) => {
             const rows = results.rows.raw(); // or results.rows._array
@@ -403,6 +402,7 @@ export const SelectOrganes = async () => {
     throw error; // Optionally rethrow the error if needed
   }
 };
+
 
 
 export const selectSallesReunion = async () => {
@@ -492,19 +492,26 @@ export const searchReunions = (selectedAuthority, location, startDate, endDate) 
 
 
 
-// Fetch data functions
 export const getLastMeetings = () => {
   return new Promise((resolve, reject) => {
     db.transaction(tx => {
       tx.executeSql(
-        'SELECT * FROM Reunion ORDER BY Date_Reunion DESC LIMIT 10',
+        'SELECT DISTINCT * FROM Reunion ORDER BY Date_Reunion DESC LIMIT 10', // Ajout de DISTINCT
         [],
-        (_, { rows: { _array } }) => resolve(_array),
+        (_, { rows: { _array } }) => {
+          // Supprimer les doublons basés sur un champ unique, tel que l'id
+          const uniqueMeetings = Array.from(new Set(_array.map(meeting => meeting.id)))
+            .map(id => {
+              return _array.find(meeting => meeting.id === id);
+            });
+          resolve(uniqueMeetings);
+        },
         (error) => reject(error)
       );
     });
   });
 };
+
 
 
 // Function to get meetings by month
