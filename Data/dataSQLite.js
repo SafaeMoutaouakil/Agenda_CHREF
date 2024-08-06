@@ -381,6 +381,30 @@ export const selectOrganes = async () => {
   }
 };
 
+export const SelectOrganes = async () => {
+  try {
+    return await new Promise((resolve, reject) => {
+      db.transaction(tx => {
+        tx.executeSql(
+          'SELECT * FROM organes',
+          [],
+          (tx, results) => {
+            const rows = results.rows.raw(); // or results.rows._array
+            resolve(rows);
+          },
+          (tx, error) => {
+            reject(error);
+          }
+        );
+      });
+    });
+  } catch (error) {
+    console.error('Error fetching organes:', error);
+    throw error; // Optionally rethrow the error if needed
+  }
+};
+
+
 export const selectSallesReunion = async () => {
   try {
     return await new Promise((resolve, reject) => {
@@ -481,6 +505,25 @@ export const getLastMeetings = () => {
     });
   });
 };
+
+
+// Function to get meetings by month
+export const getMeetingsByMonth = (month) => {
+  return new Promise((resolve, reject) => {
+    db.transaction(tx => {
+      tx.executeSql(
+        'SELECT * FROM Reunion WHERE strftime("%m", Date_Reunion) = ?',
+        [month.toString().padStart(2, '0')], // Ensure month is in "MM" format
+        (_, result) => resolve(result.rows.raw()),
+        (_, error) => {
+          console.log('Error fetching meetings by month:', error.message);
+          reject(error);
+        }
+      );
+    });
+  });
+};
+
 
 
 

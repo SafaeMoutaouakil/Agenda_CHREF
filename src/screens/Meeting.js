@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, ImageBackground, StyleSheet, ScrollView } from 'react-native';
-import { getLastMeetings, selectSallesReunion, selectOrganes } from '../../Data/dataSQLite';
+import { getMeetingsByMonth, selectSallesReunion, SelectOrganes } from '../../Data/dataSQLite';
 
 const Meeting = () => {
   const [meetings, setMeetings] = useState([]);
@@ -10,10 +10,13 @@ const Meeting = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const data = await getLastMeetings();
-        setMeetings(data || []); // Ensure meetings is an array
-        const authoritiesData = await selectOrganes();
+        const currentMonth = new Date().getMonth() + 1;
+        const meetingsData = await getMeetingsByMonth(currentMonth);
+        setMeetings(meetingsData || []); // Ensure meetings is an array
+
+        const authoritiesData = await SelectOrganes();
         setAuthorities(authoritiesData || []); // Ensure authorities is an array
+
         const locationsData = await selectSallesReunion();
         setLocations(locationsData || []); // Ensure locations is an array
       } catch (error) {
@@ -24,15 +27,6 @@ const Meeting = () => {
     fetchData();
   }, []);
 
-  // Get the current month (1-based, so January is 1, February is 2, etc.)
-  const currentMonth = new Date().getMonth() + 1;
-
-  // Filter meetings for the current month
-  const filteredMeetings = meetings.filter((meeting) => {
-    const meetingMonth = new Date(meeting.Date_Reunion).getMonth() + 1;
-    return meetingMonth === currentMonth;
-  });
-
   return (
     <ImageBackground
       style={styles.homeIcon}
@@ -40,40 +34,40 @@ const Meeting = () => {
       source={require("../../assets/home.png")}
     >
       <ScrollView>
-        {filteredMeetings.length > 0 ? (
-          filteredMeetings.map((meeting) => (
+        {meetings.length > 0 ? (
+          meetings.map((meeting) => (
             <View key={meeting.id} style={styles.agenda}>
               <View style={styles.row}>
-                <Text style={styles.boldText}>التاريخ: </Text>
                 <Text style={styles.agendaText}>{meeting.Date_Reunion}</Text>
+                <Text style={styles.boldText}>التاريخ: </Text>
               </View>
               <View style={styles.row}>
-                <Text style={styles.boldText}>الساعة: </Text>
                 <Text style={styles.agendaText}>{meeting.Heure_Reunion}</Text>
+                <Text style={styles.boldText}>الساعة: </Text>
               </View>
               <View style={styles.row}>
-                <Text style={styles.boldText}>الموضوع: </Text>
                 <Text style={styles.agendaText}>{meeting.Sujet_Ar}</Text>
+                <Text style={styles.boldText}>الموضوع: </Text>
               </View>
               <View style={styles.row}>
-                <Text style={styles.boldText}>التفاصيل: </Text>
                 <Text style={styles.agendaText}>{meeting.Details}</Text>
+                <Text style={styles.boldText}>التفاصيل: </Text>
               </View>
               <View style={styles.row}>
-                <Text style={styles.boldText}>الهيئة: </Text>
                 <Text style={styles.agendaText}>
                   {authorities.find(authority => authority.id === meeting.IDorganes)?.Nom_Ar}
                 </Text>
+                <Text style={styles.boldText}>الهيئة: </Text>
               </View>
               <View style={styles.row}>
-                <Text style={styles.boldText}>الوضعية: </Text>
                 <Text style={styles.agendaText}>{meeting.Observation}</Text>
+                <Text style={styles.boldText}>الوضعية: </Text>
               </View>
               <View style={styles.row}>
-                <Text style={styles.boldText}>المكان: </Text>
                 <Text style={styles.agendaText}>
                   {locations.find(location => location.id === meeting.Salles_ID)?.Salle_Ar}
                 </Text>
+                <Text style={styles.boldText}>المكان: </Text>
               </View>
               <View style={styles.lineViewBorder} />
             </View>
@@ -99,16 +93,19 @@ const styles = StyleSheet.create({
   row: {
     flexDirection: 'row',
     marginBottom: 5,
+    justifyContent: 'flex-end', // Align items to the right
   },
   boldText: {
     fontWeight: 'bold',
     fontSize: 16,
-    marginRight: 5,
+    marginLeft: 5, // Add space between the label and the data
     color: 'black',
+    textAlign: 'right', // Align text to the right
   },
   agendaText: {
     fontSize: 16,
     color: 'black',
+    textAlign: 'right', // Align text to the right
   },
   lineViewBorder: {
     height: 1,
